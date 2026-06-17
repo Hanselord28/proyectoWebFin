@@ -1,0 +1,28 @@
+{
+  "name": "proyectowebfin",
+  "version": "1.0.0",
+  "description": "proyecto de final de semestre web 2026",
+  "homepage": "https://github.com/Hanselord28/proyectoWebFin#readme",
+  "bugs": {
+    "url": "https://github.com/Hanselord28/proyectoWebFin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hanselord28/proyectoWebFin.git"
+  },
+  "license": "MIT",
+  "author": "Hansel Tobar",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "js": "^0.1.0",
+    "mysql2": "^3.22.5",
+    "node": "^26.3.0"
+  }
+}
