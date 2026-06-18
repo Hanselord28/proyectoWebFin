@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include ('../partials/head') %>
+</head>
+<body class="bg-light">
+
+    <nav>
+        <%- include ('../partials/navbar') %>
+    </nav>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-lg border-0 p-4">
+                    <h3 class="text-center text-primary mb-4 fw-bold">Agendar Nueva Cita</h3>
+
+                    <% if (typeof success !== 'undefined' && success) { %>
+                        <div class="alert alert-success text-center"><%= success %></div>
+                    <% } %>
+
+                    <form action="/citas/nueva" method="POST">
+                        
+                        <% if (!isLogged) { %>
+                            <div class="alert alert-info py-2 small text-center mb-4">
+                                Estás agendando como <strong>invitado</strong>. Si ya tienes cuenta, <a href="/auth/login">inicia sesión aquí</a>.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-muted">Nombre</label>
+                                    <input type="text" class="form-control" name="nombre_invitado" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-muted">Apellidos</label>
+                                    <input type="text" class="form-control" name="apellidos_invitado" required>
+                                </div>
+                            </div>
+                            <div class="mb-4 border-bottom pb-4">
+                                <label class="form-label text-muted">Correo Electrónico</label>
+                                <input type="email" class="form-control" name="correo_invitado" required>
+                            </div>
+                        <% } %>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted">¿Qué procedimiento necesitas?</label>
+                            <select class="form-select" name="id_procedimiento" required>
+                                <option value="" disabled selected>Selecciona un tratamiento...</option>
+                                <% procedimientos.forEach(proc => { %>
+                                    <option value="<%= proc.id_procedimiento %>"><%= proc.nombre %> (<%= proc.duracion_estimada_minutos %> min)</option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Elige un Profesional (Opcional)</label>
+                            <select class="form-select" name="id_profesional" required>
+                                <option value="1" selected>Cualquier profesional disponible</option>
+                                <% profesionales.forEach(prof => { %>
+                                    <option value="<%= prof.id_profesional %>">Dr/a. <%= prof.nombre %> <%= prof.apellidos %> - <%= prof.especialidad %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label text-muted">Fecha</label>
+                                <input type="date" class="form-control" name="fecha" required>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label text-muted">Hora</label>
+                                <input type="time" class="form-control" name="hora" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">Confirmar Cita</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include ('../partials/footer') %>
+    </footer>
+</body>
+</html>

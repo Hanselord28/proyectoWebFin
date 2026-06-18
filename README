@@ -1,0 +1,20 @@
+Integrantes: HAnsel Eduard Tobar López
+
+Nombre del Negocio: Clinica dental España
+
+Problemas a resolver:
+La clinica dental España necesita una pagina web a travez de la cual poder publicitar su clinica.
+ademas de permitir registrar a sus pacientes y profecionales permitiendo que los primeros
+tengan la facultad de agendar horas por profecional, por procedimiento o especialidad.
+contando tambien con un historial personal de cada paciente y sus procedimientos realizados.
+
+para ejecutar este proyecto debe contar con:
+
+-node
+-js
+-mysql2
+-express
+-express-session
+-ejs
+-bcryptjs
+-dotenv

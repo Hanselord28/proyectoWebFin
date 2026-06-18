@@ -19,8 +19,11 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "js": "^0.1.0",
     "mysql2": "^3.22.5",
     "node": "^26.3.0"

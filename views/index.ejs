@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include ('partials/head') %>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+    <nav>
+        <%- include ('partials/navbar') %>
+    </nav>
+
+    <main>
+    <header class="hero-section text-center py-5 bg-light">
+        <div class="container">
+            <h1 class="display-4 fw-bold text-primary mb-3">Tu sonrisa en las mejores manos</h1>
+            <p class="lead text-muted mb-4">Especialistas en odontología general, ortodoncia, implantes y estética dental.</p>
+        </div>
+    </header>
+
+
+    <section class="position-relative mb-5">
+        
+        <div id="clinicaCarousel" class="carousel slide" data-bs-ride="carousel">
+            
+            <div class="carousel-indicators z-0">
+                <button type="button" data-bs-target="#clinicaCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#clinicaCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#clinicaCarousel" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner bg-dark">
+                <div class="carousel-item active" data-bs-interval="4000">
+                    <img src="/img/stock2.jpg" class="d-block w-100 opacity-75" style="height: 85vh; min-height: 850px; object-fit: cover;" alt="Recepción de la clínica">
+                </div>
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="/img/stock3.jpg" class="d-block w-100 opacity-75" style="height: 85vh; min-height: 850px; object-fit: cover;" alt="Box dental equipado">
+                </div>
+                <div class="carousel-item" data-bs-interval="4000">
+                    <img src="/img/stock1.jpg" class="d-block w-100 opacity-75" style="height: 85vh; min-height: 850px; object-fit: cover;" alt="Sala de espera">
+                </div>
+            </div>
+
+            <button class="carousel-control-prev z-0" type="button" data-bs-target="#clinicaCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next z-0" type="button" data-bs-target="#clinicaCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+
+        <div class="position-absolute top-50 start-50 translate-middle w-100 z-3" style="pointer-events: none;">
+            <div class="container" style="pointer-events: auto;">
+                
+                <h2 class="text-center mb-4 text-white fw-bold shadow-sm">Nuestros Tratamientos</h2>
+                
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-lg text-center p-4 bg-white bg-opacity-90">
+                            <div class="card-body">
+                                <i class="bi bi-bandaid display-4 text-primary mb-3 d-block"></i>
+                                <h5 class="card-title fw-bold">Consulta General</h5>
+                                <p class="card-text text-muted">Evaluaciones completas, limpiezas y prevención para mantener tu salud bucal impecable.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-lg text-center p-4 bg-white bg-opacity-90">
+                            <div class="card-body">
+                                <i class="bi bi-emoji-smile display-4 text-primary mb-3 d-block"></i>
+                                <h5 class="card-title fw-bold">Estética Dental</h5>
+                                <p class="card-text text-muted">Blanqueamientos y carillas para devolverte la confianza al sonreír.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-lg text-center p-4 bg-white bg-opacity-90">
+                            <div class="card-body">
+                                <i class="bi bi-tools display-4 text-primary mb-3 d-block"></i>
+                                <h5 class="card-title fw-bold">Ortodoncia e Implantes</h5>
+                                <p class="card-text text-muted">Soluciones avanzadas para alinear tus dientes y reponer piezas perdidas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 text-center mt-5">
+                    <a href="/appointments/new" class="btn btn-primary btn-lg px-5 py-3 shadow-lg fw-bold">
+                        Agendar mi consulta hoy
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+    
+    <%- include ('partials/footer') %>
+    
+</body>
+</html>

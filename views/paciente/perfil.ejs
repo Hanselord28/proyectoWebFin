@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include ('../partials/head') %>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    
+    <%- include ('../partials/navbar') %>
+
+    <div class="container mb-5">
+        <h2 class="mb-4 text-primary fw-bold">Hola, <%= nombreUsuario %> 👋</h2>
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                        <h5 class="card-title fw-bold text-secondary"><i class="bi bi-calendar-check me-2 text-primary"></i>Próximas Citas</h5>
+                    </div>
+                    <div class="card-body">
+                        <% if (citas.length > 0) { %>
+                            <div class="list-group list-group-flush">
+                                <% citas.forEach(cita => { %>
+                                    <div class="list-group-item px-0 py-3">
+                                        <div class="d-flex w-100 justify-content-between mb-1">
+                                            <h6 class="mb-0 fw-bold"><%= cita.procedimiento %></h6>
+                                            <span class="badge bg-warning text-dark rounded-pill">Pendiente</span>
+                                        </div>
+                                        <p class="mb-1 text-muted small">
+                                            <i class="bi bi-clock me-1"></i> 
+                                            <%= new Date(cita.fecha).toLocaleDateString('es-ES') %> a las <%= cita.hora.substring(0, 5) %> hrs
+                                        </p>
+                                        <small class="text-muted"><i class="bi bi-person-badge me-1"></i> Dr/a. <%= cita.doc_nombre %> <%= cita.doc_apellidos %></small>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-5 text-muted">
+                                <i class="bi bi-calendar-x display-4 d-block mb-3 opacity-50"></i>
+                                <p>No tienes citas programadas.</p>
+                                <a href="/citas/nueva" class="btn btn-primary btn-sm mt-2">Agendar ahora</a>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                        <h5 class="card-title fw-bold text-secondary"><i class="bi bi-clipboard2-pulse me-2 text-primary"></i>Historial Clínico</h5>
+                    </div>
+                    <div class="card-body">
+                        <% if (historial.length > 0) { %>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light text-muted small">
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Procedimiento</th>
+                                            <th>Diagnóstico & Tratamiento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        <% historial.forEach(registro => { %>
+                                            <tr>
+                                                <td class="text-nowrap fw-semibold">
+                                                    <%= new Date(registro.fecha_registro).toLocaleDateString('es-ES') %>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary"><%= registro.procedimiento || 'General' %></span>
+                                                </td>
+                                                <td>
+                                                    <strong>Diag:</strong> <%= registro.diagnostico %><br>
+                                                    <span class="text-muted"><strong>Tratamiento:</strong> <%= registro.tratamiento_realizado %></span>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-5 text-muted">
+                                <i class="bi bi-journal-medical display-4 d-block mb-3 opacity-50"></i>
+                                <p>Aún no tienes registros en tu historial clínico.</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <%- include ('../partials/footer') %>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+
+    /* Efecto Parallax */
+    .parallax-wrapper {
+        /* Cambia esta ruta por una imagen general de tu clínica que servirá de fondo fijo */
+        background-image: url('/img/fondo-parallax.jpg'); 
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        padding: 80px 0;
+    }
+
+    /* Capa oscura para que el carrusel y el texto resalten sobre el fondo */
+    .parallax-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+    }
+
+    /* Aseguramos que el contenido quede por encima de la capa oscura */
+    .parallax-content {
+        position: relative;
+        z-index: 2;
+    }
+
+
+
+    .hero-bg {
+        /* El linear-gradient crea una capa oscura semitransparente sobre la imagen */
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/stock6.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        /* Un poco más de padding vertical para que la imagen se luzca */
+        padding: 200px 0; 
+    }
+
+    /* Efecto hover suave para enlaces del Footer */
+.transition-colors {
+    transition: color 0.3s ease-in-out;
+}
+
+.text-hover-white:hover {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+}
