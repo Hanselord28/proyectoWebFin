@@ -8,38 +8,42 @@ exports.showLogin = (req, res) => {
 
 // Procesa formulario (POST)
 exports.processLogin = async (req, res) => {
-    const { correo, password } = req.body; // Capturamos los campos del body
+    const { correo, password } = req.body;
 
     try {
-        // Buscar al usuario en la base de datos por su correo
-        const [rows] = await pool.query('SELECT * FROM usuarios WHERE correo = ?', [correo]);
-        const user = rows[0];
+        // 1. Intentamos buscar si es un Paciente o Administrador
+        let user = await userModel.getUserByEmail(correo);
+        let isProfesional = false;
 
-        // Si el usuario existe y la contraseña es correcta (bcrypt.compare)
-        if (user && await bcrypt.compare(password, user.password)) {
-            
-            // Guardamos los datos de la sesión!
-            console.log("Usuario encontrado:", user);
-            console.log("Rol detectado en BD:", user.rol);
-            console.log("¿La contraseña coincide?:", await bcrypt.compare(password, user.password));
-            //========================================
-            req.session.userId = user.id_usuario;
-            req.session.rol = user.rol;
-            req.session.nombre = user.nombre;
-
-            // Redirigimos dependiendo de si es "admin" o "paciente"
-            if (user.rol === 'admin') {
-                return res.redirect('/admin/dashboard');
-            } else {
-                return res.redirect('/perfil'); 
-            }
-        } else {
-            // Falla la validación: Se vuelve a renderizar el login con el mensaje de error
-            return res.render('auth/login', { error: 'Correo o contraseña incorrectos. Inténtalo de nuevo.' });
+        // 2. Si no es paciente/admin, buscamos si es un Profesional
+        if (!user) {
+            const profesionalModel = require('../models/profesionalModel');
+            user = await profesionalModel.getProfesionalByEmail(correo);
+            isProfesional = true; // Marcamos que el usuario encontrado es dentista
         }
 
+        // 3. Verificamos la contraseña
+        if (user && await bcrypt.compare(password, user.password)) {
+            // Asignamos los datos de sesión (ID y Nombre)
+            req.session.userId = isProfesional ? user.id_profesional : user.id_usuario;
+            req.session.nombre = user.nombre;
+            
+            // Asignamos el rol ('profesional' forzado, o el que venga en la BD para admins/pacientes)
+            req.session.rol = isProfesional ? 'profesional' : user.rol;
+
+            // 4. Redirigimos según el rol
+            if (req.session.rol === 'admin') {
+                return res.redirect('/admin/dashboard');
+            } else if (req.session.rol === 'profesional') {
+                return res.redirect('/profesional/dashboard');
+            } else {
+                return res.redirect('/paciente/perfil'); 
+            }
+        } else {
+            return res.render('auth/login', { error: 'Correo o contraseña incorrectos. Inténtalo de nuevo.' });
+        }
     } catch (error) {
-        console.error(error);
+        console.error("Error en el login:", error);
         res.render('auth/login', { error: 'Ocurrió un error en el servidor.' });
     }
 };
@@ -53,25 +57,28 @@ exports.showRegistro = (req, res) => {
 
 // Procesar los datos de registro (POST)
 exports.processRegistro = async (req, res) => {
-    const { nombre, apellidos, correo, password } = req.body;
+    // 1. Extraemos TODOS los campos del formulario
+    const { nombre, apellidos, rut, correo, telefono, prevision, password } = req.body;
 
     try {
-        //Verificar si el correo ya está registrado
         const existingUser = await userModel.getUserByEmail(correo);
         
         if (existingUser) {
             return res.render('auth/registro', { error: 'Este correo electrónico ya está registrado. Intenta iniciar sesión.' });
         }
 
-        // Si no existe, creamos el usuario en la bd
-        await userModel.createUser(nombre, apellidos, correo, password);
+        // 2. Pasamos los nuevos datos al modelo en el orden correcto
+        await userModel.createUser(nombre, apellidos, rut, correo, telefono, prevision, password);
 
-        
-        //redirigimos al login 
+        // Redirigimos al login
         res.redirect('/auth/login');
 
     } catch (error) {
         console.error("Error en el registro:", error);
+        // Si el error es por RUT duplicado, podemos dar un aviso más claro
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.render('auth/registro', { error: 'Este RUT o Correo ya se encuentra registrado.' });
+        }
         res.render('auth/registro', { error: 'Ocurrió un error al crear la cuenta. Inténtalo de nuevo.' });
     }
 };

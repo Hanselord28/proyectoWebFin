@@ -67,6 +67,9 @@ app.use('/citas', citasRoutes);
 const adminRoutes = require('./routes/admin');
 app.use('/admin', adminRoutes);
 
+// Importar y conectar el sistema de rutas de profesional
+const profesionalRoutes = require('./routes/profesional');
+app.use('/profesional', profesionalRoutes);
 
 
 

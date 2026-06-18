@@ -9,14 +9,15 @@ const getUserByEmail = async (correo) => {
 };
 
 // Crear un nuevo usuario (Registro)
-const createUser = async (nombre, apellidos, correo, password, rol = 'paciente') => {
+// Crear un nuevo usuario (Registro)
+const createUser = async (nombre, apellidos, rut, correo, telefono, prevision, password, rol = 'paciente') => {
     // Encriptamos la contraseña antes de guardarla
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const [result] = await pool.query(
-        'INSERT INTO usuarios (nombre, apellidos, correo, password, rol) VALUES (?, ?, ?, ?, ?)',
-        [nombre, apellidos, correo, hashedPassword, rol]
+        'INSERT INTO usuarios (nombre, apellidos, rut, correo, telefono, prevision, password, rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [nombre, apellidos, rut, correo, telefono, prevision, hashedPassword, rol]
     );
     return result;
 };
