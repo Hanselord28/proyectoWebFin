@@ -1,9 +1,0 @@
-Usuarios para probar el sistema
-
-Admin: admin@clinicaespana.es
-
-Profesional: juan.perez@clinicaespana.es
-
-Paciente: maguito@explosivo.cl
-
-Contraseñas:123456

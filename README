@@ -24,13 +24,30 @@ Dependencias clave de Node.js a instalar: express, mysql2, ejs, express-session,
 
 Clonar o descargar el código desde el github del proyecto en tu equipo local.
 
+```
+git clone https://github.com/Hanselord28/proyectoWebFin.git
+```
+
+
 Abrir tu gestor de base de datos (phpMyAdmin) e importar el script SQL para generar las tablas.
+
 
 Abrir la terminal en la carpeta raíz del proyecto y ejecutar el comando 'npm install' para instalar las dependencias necesarias.
 
+```
+npm install
+```
+
+
 Crear el archivo .env en la raíz del proyecto configurando tus variables de entorno (.env-ejemplo).
 
+
 Ejecutar el comando 'node server.js' para iniciar el servidor.
+
+```
+node server.js
+```
+
 
 5. CONFIGURACIÓN DE LA BASE DE DATOS
 
@@ -44,8 +61,11 @@ Archivo SQL: 'clinica_espana', se encuentra en la carpeta raíz del proyecto
 
 6. CREDENCIALES DE PRUEBA
 
+    Administrador: admin@clinicaespana.es / Contraseña: 123456
 
-(Nota para ti: Aquí debes proporcionar el correo y la clave encriptada de un usuario al que le hayas asignado el rol de 'admin' en tu base de datos ). * Ejemplo: Usuario: admin@clinicaespana.es / Contraseña: 123456.
+    Profesional: juan.perez@clinicaespana.es / Contraseña: 123456
+
+    Paciente: maguito@explosivo.cl / Contraseña: 123456
 
 7. USO DEL SISTEMA
 
