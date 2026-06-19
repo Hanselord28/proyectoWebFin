@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS historial_clinico (
 
 -- Administrador y Pacientes
 INSERT INTO usuarios (nombre, apellidos, rut, correo, telefono, prevision, password, rol) VALUES
-('Admin', 'Principal', '11.111.111-1', 'admin@clinicaespana.es', '+56911111111', 'Isapre', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'admin'),
+('Admin', 'Principal', '11.111.111-1', 'admin@clinicaespana.es', '+56911111111', 'Isapre', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', 'admin'),
 ('Carlos', 'Sanhueza', '22.222.222-2', 'carlos@correo.cl', '+56922222222', 'Fonasa', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'paciente'),
 ('María', 'González', '33.333.333-3', 'maria@correo.cl', '+56933333333', 'Isapre', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'paciente'),
 ('Maguito', 'Explosivo', '20.000.000-1', 'maguito@explosivo.cl', '+56944444444', 'Fonasa', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'paciente');

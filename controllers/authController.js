@@ -10,41 +10,67 @@ exports.showLogin = (req, res) => {
 exports.processLogin = async (req, res) => {
     const { correo, password } = req.body;
 
+    // 1. Verificamos qué está recibiendo Node.js desde tu formulario HTML
+    console.log("► Correo recibido del formulario:", correo);
+    console.log("► Contraseña recibida del formulario:", password);
+
     try {
-        //buscar si es un Paciente o Administrador
+        // Intentar buscar primero en la tabla usuarios (pacientes y admins)
         let user = await userModel.getUserByEmail(correo);
         let isProfesional = false;
 
-        //comprobamos que si no es paciente o admin, sea un profesional
+        // Si no lo encuentra en usuarios, buscamos en la tabla profesionales
         if (!user) {
-            const profesionalModel = require('../models/profesionalModel');
+            console.log("► Usuario no encontrado en 'usuarios'. Buscando en 'profesionales'...");
             user = await profesionalModel.getProfesionalByEmail(correo);
-            isProfesional = true; // Marcamos que el usuario encontrado es dentista
+            isProfesional = true;
         }
 
-        // verificamos la contraseña
-        if (user && await bcrypt.compare(password, user.password)) {
-            // Asignamos los datos de sesión (ID y Nombre)
-            req.session.userId = isProfesional ? user.id_profesional : user.id_usuario;
-            req.session.nombre = user.nombre;
+        // 2. Verificamos si el modelo logró encontrar al usuario en alguna tabla
+        console.log("► Usuario encontrado en MySQL:", user);
+
+        if (!user) {
+            console.log("► ERROR: El usuario no existe en ninguna tabla.");
+            return res.render('auth/login', { error: 'Correo o contraseña incorrectos' });
+        }
+
+        // 3. Verificamos el match de la contraseña con bcrypt
+        const validPassword = await bcrypt.compare(password, user.password);
+        console.log("► ¿Contraseña válida según bcrypt?:", validPassword);
+
+        if (!validPassword) {
+            console.log("► ERROR: La contraseña no coincide con el hash de la base de datos.");
+            return res.render('auth/login', { error: 'Correo o contraseña incorrectos' });
+        }
+
+        // Si todo está correcto, guardamos la sesión
+        req.session.isLogged = true;
+        req.session.nombreUsuario = user.nombre;
+
+        // Redirección inteligente dependiendo del rol
+        if (isProfesional) {
+            req.session.userId = user.id_profesional;
+            req.session.rol = 'profesional';
+            req.session.rut = user.rut_personal; // Guardamos el RUT del profesional
             
-            //Asignamos el rol 
-            req.session.rol = isProfesional ? 'profesional' : user.rol;
-
-            //Redirigimos segun el rol
-            if (req.session.rol === 'admin') {
-                return res.redirect('/admin/dashboard');
-            } else if (req.session.rol === 'profesional') {
-                return res.redirect('/profesional/dashboard');
-            } else {
-                return res.redirect('/paciente/perfil'); 
-            }
+            console.log("► Login exitoso: Redirigiendo a Dashboard Profesional");
+            return res.redirect('/profesional/dashboard');
         } else {
-            return res.render('auth/login', { error: 'Correo o contraseña incorrectos. Inténtalo de nuevo.' });
+            req.session.userId = user.id_usuario;
+            req.session.rol = user.rol;
+
+            if (user.rol === 'admin') {
+                console.log("► Login exitoso: Redirigiendo a Dashboard Admin");
+                return res.redirect('/admin/dashboard');
+            } else {
+                console.log("► Login exitoso: Redirigiendo a Perfil de Paciente");
+                return res.redirect('/paciente/perfil');
+            }
         }
+
     } catch (error) {
-        console.error("Error en el login:", error);
-        res.render('auth/login', { error: 'Ocurrió un error en el servidor.' });
+        console.error("► ERROR GRAVE EN EL SERVIDOR:", error);
+        res.render('auth/login', { error: 'Error en el servidor al intentar iniciar sesión' });
     }
 };
 
