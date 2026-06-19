@@ -1,0 +1,102 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/navbar') %>
+
+<div class="container mt-5 mb-5 d-flex flex-column min-vh-100">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-info text-white d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">medical_information</span>
+                    <h4 class="mb-0">Registrar Nuevo Profesional</h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form action="/admin/profesionales/nuevo" method="POST">
+                        
+                        <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Datos Clínicos y Personales</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Ej: Dra. María" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Apellidos</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
+                                    <input type="text" class="form-control" name="apellidos" placeholder="Ej: González" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">RUT Personal (DNI/NIE)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">badge</span></span>
+                                    <input type="text" class="form-control" name="rut_personal" placeholder="12345678-9" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Nº de Colegiado</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">assignment_ind</span></span>
+                                    <input type="text" class="form-control" name="rut_profesional" placeholder="Colegiado profesional" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label text-muted fw-bold">Especialidad</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">stethoscope</span></span>
+                                    <select class="form-select" name="especialidad" required>
+                                        <option value="" disabled selected>Seleccione...</option>
+                                        <option value="Odontólogo General">Odontólogo General</option>
+                                        <option value="Ortodoncista">Ortodoncista</option>
+                                        <option value="Endodoncista">Endodoncista</option>
+                                        <option value="Cirujano Maxilofacial">Cirujano Maxilofacial</option>
+                                        <option value="Periodoncista">Periodoncista</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Acceso al Sistema</h6>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">mail</span></span>
+                                    <input type="email" class="form-control" name="correo" placeholder="doctor@clinica.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Contraseña Temporal</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">lock</span></span>
+                                    <input type="password" class="form-control" name="password" placeholder="Asigne una clave inicial" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/admin/dashboard" class="btn btn-secondary d-flex align-items-center gap-1">
+                                <span class="material-symbols-outlined">arrow_back</span> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-info text-white d-flex align-items-center gap-1">
+                                <span class="material-symbols-outlined">save</span> Guardar Profesional
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../partials/footer') %>

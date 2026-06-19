@@ -17,8 +17,8 @@
                         <h3 class="text-center mb-4 fw-bold text-primary">Bienvenido</h3>
                         
                         <% if (typeof error !== 'undefined' && error) { %>
-                            <div class="alert alert-danger text-center shadow-sm" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i> <%= error %>
+                            <div class="alert alert-danger shadow-sm d-flex align-items-center justify-content-center gap-2" role="alert">
+                                <span class="material-symbols-outlined">error</span> <%= error %>
                             </div>
                         <% } %>
 
@@ -27,7 +27,9 @@
                             <div class="mb-3">
                                 <label for="correo" class="form-label text-muted">Correo Electrónico</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white text-primary"><i class="bi bi-envelope-fill"></i></span>
+                                    <span class="input-group-text bg-white text-primary">
+                                        <span class="material-symbols-outlined fs-5">mail</span>
+                                    </span>
                                     <input type="email" class="form-control" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
                                 </div>
                             </div>
@@ -35,13 +37,17 @@
                             <div class="mb-4">
                                 <label for="password" class="form-label text-muted">Contraseña</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white text-primary"><i class="bi bi-lock-fill"></i></span>
+                                    <span class="input-group-text bg-white text-primary">
+                                        <span class="material-symbols-outlined fs-5">lock</span>
+                                    </span>
                                     <input type="password" class="form-control" id="password" name="password" placeholder="********" required>
                                 </div>
                             </div>
 
                             <div class="d-grid gap-2 mb-4">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">Ingresar</button>
+                                <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <span class="material-symbols-outlined">login</span> Ingresar
+                                </button>
                             </div>
 
                             <div class="text-center text-muted small">

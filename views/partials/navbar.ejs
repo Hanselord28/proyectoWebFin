@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="/">
-            <img src="/img/LogoSinFondoCDE.png" alt="Clínica Dental España" height="45" style="width: auto; object-fit: contain;">
+            <img src="/img/logo-dentales.png" alt="Clínica Dental España" height="45" style="width: auto; object-fit: contain;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -9,24 +9,34 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Inicio</a>
+                    <a class="nav-link active d-flex align-items-center gap-1" href="/">
+                        <span class="material-symbols-outlined fs-6">home</span> Inicio
+                    </a>
                 </li>
                 
                 <% if (typeof isLogged !== 'undefined' && isLogged || typeof nombreUsuario !== 'undefined') { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/paciente/perfil">Mi Perfil</a>
+                        <a class="nav-link d-flex align-items-center gap-1" href="/paciente/perfil">
+                            <span class="material-symbols-outlined fs-6">account_circle</span> Mi Perfil
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/auth/logout">Cerrar Sesión</a>
+                        <a class="nav-link d-flex align-items-center gap-1" href="/auth/logout">
+                            <span class="material-symbols-outlined fs-6">logout</span> Cerrar Sesión
+                        </a>
                     </li>
                 <% } else { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/auth/login">Iniciar Sesión</a>
+                        <a class="nav-link d-flex align-items-center gap-1" href="/auth/login">
+                            <span class="material-symbols-outlined fs-6">login</span> Iniciar Sesión
+                        </a>
                     </li>
                 <% } %>
 
-                <li class="nav-item">
-                    <a class="btn btn-light text-primary ms-lg-3 fw-bold" href="/citas/nueva">Agendar Hora</a>
+                <li class="nav-item d-flex align-items-center">
+                    <a class="btn btn-light text-primary ms-lg-3 fw-bold d-flex align-items-center gap-1" href="/citas/nueva">
+                        <span class="material-symbols-outlined fs-6">calendar_month</span> Agendar Hora
+                    </a>
                 </li>
             </ul>
         </div>

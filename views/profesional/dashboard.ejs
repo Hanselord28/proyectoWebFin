@@ -7,10 +7,17 @@
 
     <nav class="navbar navbar-dark bg-info shadow-sm">
         <div class="container-fluid px-4">
-            <a class="navbar-brand fw-bold" href="/profesional/dashboard"><i class="bi bi-heart-pulse me-2"></i>Panel Clínico</a>
-            <div class="d-flex align-items-center">
-                <span class="text-dark fw-bold me-3">Dr/a. <%= nombreDoc %></span>
-                <a href="/auth/logout" class="btn btn-outline-dark btn-sm">Cerrar Sesión</a>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/profesional/dashboard">
+                <span class="material-symbols-outlined">stethoscope</span>
+                Panel Clínico
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-dark fw-bold d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-5">person</span> Dr/a. <%= nombreDoc %>
+                </span>
+                <a href="/auth/logout" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-6">logout</span> Cerrar Sesión
+                </a>
             </div>
         </div>
     </nav>
@@ -20,8 +27,9 @@
             
             <div class="col-lg-5">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom-0 pt-4">
-                        <h5 class="fw-bold text-secondary"><i class="bi bi-calendar-day me-2 text-info"></i>Mis Citas Pendientes</h5>
+                    <div class="card-header bg-white border-bottom-0 pt-4 d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined text-info">event_upcoming</span>
+                        <h5 class="fw-bold text-secondary mb-0">Mis Citas Pendientes</h5>
                     </div>
                     <div class="card-body">
                         <% if(citas.length > 0) { %>
@@ -30,15 +38,22 @@
                                     <div class="list-group-item px-0 py-3">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1 fw-bold text-dark"><%= cita.paciente_nombre %> <%= cita.paciente_apellidos %></h6>
-                                            <small class="text-info fw-bold"><%= cita.hora.substring(0, 5) %> hrs</small>
+                                            <small class="text-info fw-bold d-flex align-items-center gap-1">
+                                                <span class="material-symbols-outlined fs-6">schedule</span> <%= cita.hora.substring(0, 5) %> hrs
+                                            </small>
                                         </div>
-                                        <p class="mb-1 small text-muted"><i class="bi bi-bandaid me-1"></i> <%= cita.procedimiento %></p>
+                                        <p class="mb-1 small text-muted d-flex align-items-center gap-1">
+                                            <span class="material-symbols-outlined fs-6">dentistry</span> <%= cita.procedimiento %>
+                                        </p>
                                         <small class="text-muted"><strong>RUT:</strong> <%= cita.rut %> | <strong>Fecha:</strong> <%= new Date(cita.fecha).toLocaleDateString('es-ES') %></small>
                                     </div>
                                 <% }) %>
                             </div>
                         <% } else { %>
-                            <p class="text-center text-muted my-4">No tienes citas agendadas por el momento.</p>
+                            <div class="text-center text-muted my-5">
+                                <span class="material-symbols-outlined display-4 opacity-25 d-block mb-2">event_available</span>
+                                <p>No tienes citas agendadas por el momento.</p>
+                            </div>
                         <% } %>
                     </div>
                 </div>
@@ -47,11 +62,17 @@
             <div class="col-lg-7">
                 <div class="card shadow-sm border-0 mb-4 bg-info bg-opacity-10">
                     <div class="card-body">
-                        <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-search me-2"></i>Buscar Historial de Paciente</h5>
+                        <h5 class="fw-bold text-secondary mb-3 d-flex align-items-center gap-2">
+                            <span class="material-symbols-outlined">search</span> Buscar Historial de Paciente
+                        </h5>
                         <form action="/profesional/dashboard" method="GET" class="d-flex">
                             <input type="text" class="form-control me-2" name="rut" placeholder="Ingrese el RUT (Ej: 12.345.678-9)" value="<%= rutBuscado || '' %>" required>
-                            <button type="submit" class="btn btn-info text-white fw-bold">Buscar</button>
-                            <a href="/profesional/dashboard" class="btn btn-outline-secondary ms-2">Limpiar</a>
+                            <button type="submit" class="btn btn-info text-white fw-bold d-flex align-items-center justify-content-center gap-1">
+                                <span class="material-symbols-outlined fs-6">search</span> Buscar
+                            </button>
+                            <a href="/profesional/dashboard" class="btn btn-outline-secondary ms-2 d-flex align-items-center justify-content-center gap-1">
+                                <span class="material-symbols-outlined fs-6">backspace</span> Limpiar
+                            </a>
                         </form>
                     </div>
                 </div>
@@ -60,15 +81,19 @@
                     <div class="card shadow-sm border-0">
                         <div class="card-body">
                             <% if(paciente) { %>
-                                <h5 class="fw-bold text-primary border-bottom pb-2 mb-3">Ficha Clínica: <%= paciente.nombre %> <%= paciente.apellidos %></h5>
+                                <h5 class="fw-bold text-primary border-bottom pb-2 mb-3 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined">patient_list</span> Ficha Clínica: <%= paciente.nombre %> <%= paciente.apellidos %>
+                                </h5>
                                 <div class="row mb-4 small">
-                                    <div class="col-sm-6"><strong>RUT:</strong> <%= paciente.rut %></div>
-                                    <div class="col-sm-6"><strong>Previsión:</strong> <%= paciente.prevision %></div>
-                                    <div class="col-sm-6 mt-2"><strong>Teléfono:</strong> <%= paciente.telefono %></div>
-                                    <div class="col-sm-6 mt-2"><strong>Correo:</strong> <%= paciente.correo %></div>
+                                    <div class="col-sm-6 d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6 text-muted">badge</span><strong>RUT:</strong> <%= paciente.rut %></div>
+                                    <div class="col-sm-6 d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6 text-muted">health_and_safety</span><strong>Previsión:</strong> <%= paciente.prevision %></div>
+                                    <div class="col-sm-6 mt-2 d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6 text-muted">call</span><strong>Teléfono:</strong> <%= paciente.telefono %></div>
+                                    <div class="col-sm-6 mt-2 d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6 text-muted">mail</span><strong>Correo:</strong> <%= paciente.correo %></div>
                                 </div>
 
-                                <h6 class="fw-bold text-secondary mb-3">Historial de Tratamientos</h6>
+                                <h6 class="fw-bold text-secondary mb-3 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined fs-5">clinical_notes</span> Historial de Tratamientos
+                                </h6>
                                 <% if(historial.length > 0) { %>
                                     <div class="table-responsive">
                                         <table class="table table-hover table-sm align-middle small">
@@ -91,14 +116,21 @@
                                         </table>
                                     </div>
                                 <% } else { %>
-                                    <p class="text-muted">El paciente no tiene registros clínicos anteriores.</p>
+                                    <p class="text-muted d-flex align-items-center gap-1">
+                                        <span class="material-symbols-outlined fs-6">history_toggle_off</span> El paciente no tiene registros clínicos anteriores.
+                                    </p>
                                 <% } %>
                                 
                                 <div class="mt-3">
-                                    <button class="btn btn-sm btn-primary"><i class="bi bi-file-earmark-medical me-1"></i>Añadir Registro Clínico</button>
+                                    <button class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1">
+                                        <span class="material-symbols-outlined fs-6">note_add</span> Añadir Registro Clínico
+                                    </button>
                                 </div>
                             <% } else { %>
-                                <div class="alert alert-warning mb-0">No se encontró ningún paciente con el RUT: <strong><%= rutBuscado %></strong></div>
+                                <div class="alert alert-warning mb-0 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined">person_off</span> 
+                                    <div>No se encontró ningún paciente con el RUT: <strong><%= rutBuscado %></strong></div>
+                                </div>
                             <% } %>
                         </div>
                     </div>

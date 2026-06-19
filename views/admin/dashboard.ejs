@@ -8,10 +8,15 @@
 
     <nav class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container-fluid px-4">
-            <a class="navbar-brand fw-bold" href="/admin/dashboard"><i class="bi bi-shield-lock me-2"></i>Admin Panel - Clínica Dental España</a>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/admin/dashboard">
+                <span class="material-symbols-outlined">admin_panel_settings</span>
+                Admin Panel - Clínica Dental España
+            </a>
             <div class="d-flex align-items-center">
                 <span class="text-light me-3">Hola, <%= nombreAdmin %></span>
-                <a href="/auth/logout" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+                <a href="/auth/logout" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-6">logout</span> Cerrar Sesión
+                </a>
             </div>
         </div>
     </nav>
@@ -19,9 +24,13 @@
     <div class="container mt-5 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-secondary">Tablero General</h2>
-            <div>
-                <a href="#" class="btn btn-success me-2"><i class="bi bi-person-plus me-1"></i>Nuevo Paciente</a>
-                <a href="#" class="btn btn-primary"><i class="bi bi-person-vcard me-1"></i>Nuevo Profesional</a>
+            <div class="d-flex gap-2">
+                <a href="/admin/pacientes/nuevo" class="btn btn-success d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-5">person_add</span> Nuevo Paciente
+                </a>
+                <a href="/admin/profesionales/nuevo" class="btn btn-primary d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-5">medical_information</span> Nuevo Profesional
+                </a>
             </div>
         </div>
 
@@ -33,7 +42,7 @@
                             <h6 class="text-uppercase fw-bold opacity-75">Citas Pendientes</h6>
                             <h2 class="display-5 fw-bold mb-0"><%= stats.citasPendientes %></h2>
                         </div>
-                        <i class="bi bi-calendar-event display-4 opacity-50"></i>
+                        <span class="material-symbols-outlined display-4 opacity-50">event_upcoming</span>
                     </div>
                 </div>
             </div>
@@ -44,7 +53,7 @@
                             <h6 class="text-uppercase fw-bold opacity-75">Pacientes Registrados</h6>
                             <h2 class="display-5 fw-bold mb-0"><%= stats.pacientes %></h2>
                         </div>
-                        <i class="bi bi-people display-4 opacity-50"></i>
+                        <span class="material-symbols-outlined display-4 opacity-50">groups</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +64,7 @@
                             <h6 class="text-uppercase fw-bold opacity-75">Profesionales</h6>
                             <h2 class="display-5 fw-bold mb-0"><%= stats.profesionales %></h2>
                         </div>
-                        <i class="bi bi-heart-pulse display-4 opacity-50"></i>
+                        <span class="material-symbols-outlined display-4 opacity-50">stethoscope</span>
                     </div>
                 </div>
             </div>
@@ -64,7 +73,9 @@
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white pt-4 pb-3 d-flex justify-content-between align-items-center">
                 <h5 class="fw-bold text-secondary mb-0">Gestión de Citas</h5>
-                <a href="/citas/nueva" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-lg"></i> Agendar Cita Manual</a>
+                <a href="/admin/citas/nueva" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-6">add_circle</span> Agendar Cita Manual
+                </a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -80,7 +91,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% if(citas.length > 0) { %>
+                            <% if(typeof citas !== 'undefined' && citas.length > 0) { %>
                                 <% citas.forEach(cita => { %>
                                     <tr>
                                         <td>
@@ -92,24 +103,31 @@
                                         <td>Dr/a. <%= cita.doc_apellidos %></td>
                                         <td>
                                             <% if(cita.estado === 'pendiente') { %>
-                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                                <span class="badge bg-warning text-dark d-inline-flex align-items-center gap-1"><span class="material-symbols-outlined" style="font-size: 14px;">pending_actions</span> Pendiente</span>
                                             <% } else if(cita.estado === 'completada') { %>
-                                                <span class="badge bg-success">Completada</span>
+                                                <span class="badge bg-success d-inline-flex align-items-center gap-1"><span class="material-symbols-outlined" style="font-size: 14px;">check_circle</span> Completada</span>
                                             <% } else { %>
-                                                <span class="badge bg-danger">Cancelada</span>
+                                                <span class="badge bg-danger d-inline-flex align-items-center gap-1"><span class="material-symbols-outlined" style="font-size: 14px;">cancel</span> Cancelada</span>
                                             <% } %>
                                         </td>
                                         <td class="text-center">
-                                            <a href="/admin/citas/editar/<%= cita.id_cita %>" class="btn btn-sm btn-outline-secondary" title="Editar"><i class="bi bi-pencil"></i></a>
+                                            <a href="/admin/citas/editar/<%= cita.id_cita %>" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center justify-content-center" title="Editar">
+                                                <span class="material-symbols-outlined fs-6">edit</span>
+                                            </a>
                                             <form action="/admin/citas/eliminar/<%= cita.id_cita %>" method="POST" class="d-inline">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar esta cita?')"><i class="bi bi-trash"></i></button>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center justify-content-center" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar esta cita?')">
+                                                    <span class="material-symbols-outlined fs-6">delete</span>
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 <% }) %>
                             <% } else { %>
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">No hay citas registradas en el sistema.</td>
+                                    <td colspan="6" class="text-center py-5 text-muted">
+                                        <span class="material-symbols-outlined display-3 opacity-25 d-block mb-2">event_busy</span>
+                                        No hay citas registradas en el sistema.
+                                    </td>
                                 </tr>
                             <% } %>
                         </tbody>

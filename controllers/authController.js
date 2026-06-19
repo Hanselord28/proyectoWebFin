@@ -11,27 +11,27 @@ exports.processLogin = async (req, res) => {
     const { correo, password } = req.body;
 
     try {
-        // 1. Intentamos buscar si es un Paciente o Administrador
+        //buscar si es un Paciente o Administrador
         let user = await userModel.getUserByEmail(correo);
         let isProfesional = false;
 
-        // 2. Si no es paciente/admin, buscamos si es un Profesional
+        //comprobamos que si no es paciente o admin, sea un profesional
         if (!user) {
             const profesionalModel = require('../models/profesionalModel');
             user = await profesionalModel.getProfesionalByEmail(correo);
             isProfesional = true; // Marcamos que el usuario encontrado es dentista
         }
 
-        // 3. Verificamos la contraseña
+        // verificamos la contraseña
         if (user && await bcrypt.compare(password, user.password)) {
             // Asignamos los datos de sesión (ID y Nombre)
             req.session.userId = isProfesional ? user.id_profesional : user.id_usuario;
             req.session.nombre = user.nombre;
             
-            // Asignamos el rol ('profesional' forzado, o el que venga en la BD para admins/pacientes)
+            //Asignamos el rol 
             req.session.rol = isProfesional ? 'profesional' : user.rol;
 
-            // 4. Redirigimos según el rol
+            //Redirigimos segun el rol
             if (req.session.rol === 'admin') {
                 return res.redirect('/admin/dashboard');
             } else if (req.session.rol === 'profesional') {
@@ -50,14 +50,14 @@ exports.processLogin = async (req, res) => {
 
 const userModel = require('../models/userModel');
 
-// Mostrar la vista de registro (GET)
+//Mostrar la vista de registro (GET)
 exports.showRegistro = (req, res) => {
     res.render('auth/registro', { error: null });
 };
 
 // Procesar los datos de registro (POST)
 exports.processRegistro = async (req, res) => {
-    // 1. Extraemos TODOS los campos del formulario
+    //Extraemos los campos del formulario
     const { nombre, apellidos, rut, correo, telefono, prevision, password } = req.body;
 
     try {
@@ -67,7 +67,7 @@ exports.processRegistro = async (req, res) => {
             return res.render('auth/registro', { error: 'Este correo electrónico ya está registrado. Intenta iniciar sesión.' });
         }
 
-        // 2. Pasamos los nuevos datos al modelo en el orden correcto
+        //Pasamos los nuevos datos al modelo en el orden correcto
         await userModel.createUser(nombre, apellidos, rut, correo, telefono, prevision, password);
 
         // Redirigimos al login
@@ -75,7 +75,6 @@ exports.processRegistro = async (req, res) => {
 
     } catch (error) {
         console.error("Error en el registro:", error);
-        // Si el error es por RUT duplicado, podemos dar un aviso más claro
         if (error.code === 'ER_DUP_ENTRY') {
             return res.render('auth/registro', { error: 'Este RUT o Correo ya se encuentra registrado.' });
         }
@@ -85,7 +84,7 @@ exports.processRegistro = async (req, res) => {
 
 
 exports.logout = (req, res) => {
-    // Destruimos sesión
+    // Destruimos sesion
     req.session.destroy((err) => {
         if (err) {
             console.error("Error al cerrar sesión:", err);

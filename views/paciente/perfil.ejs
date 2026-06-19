@@ -8,14 +8,17 @@
     
     <%- include ('../partials/navbar') %>
 
-    <div class="container mb-5">
-        <h2 class="mb-4 text-primary fw-bold">Hola, <%= nombreUsuario %> 👋</h2>
+    <div class="container mt-4 mb-5">
+        <h2 class="mb-4 text-primary fw-bold d-flex align-items-center gap-2">
+            Hola, <%= nombreUsuario %> <span class="material-symbols-outlined fs-2 text-warning">waving_hand</span>
+        </h2>
 
         <div class="row g-4">
             <div class="col-lg-5">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                        <h5 class="card-title fw-bold text-secondary"><i class="bi bi-calendar-check me-2 text-primary"></i>Próximas Citas</h5>
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0 d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">event_available</span>
+                        <h5 class="card-title fw-bold text-secondary mb-0">Próximas Citas</h5>
                     </div>
                     <div class="card-body">
                         <% if (citas.length > 0) { %>
@@ -26,19 +29,23 @@
                                             <h6 class="mb-0 fw-bold"><%= cita.procedimiento %></h6>
                                             <span class="badge bg-warning text-dark rounded-pill">Pendiente</span>
                                         </div>
-                                        <p class="mb-1 text-muted small">
-                                            <i class="bi bi-clock me-1"></i> 
+                                        <p class="mb-1 text-muted small d-flex align-items-center gap-1">
+                                            <span class="material-symbols-outlined fs-6">schedule</span> 
                                             <%= new Date(cita.fecha).toLocaleDateString('es-ES') %> a las <%= cita.hora.substring(0, 5) %> hrs
                                         </p>
-                                        <small class="text-muted"><i class="bi bi-person-badge me-1"></i> Dr/a. <%= cita.doc_nombre %> <%= cita.doc_apellidos %></small>
+                                        <small class="text-muted d-flex align-items-center gap-1">
+                                            <span class="material-symbols-outlined fs-6">stethoscope</span> Dr/a. <%= cita.doc_nombre %> <%= cita.doc_apellidos %>
+                                        </small>
                                     </div>
                                 <% }) %>
                             </div>
                         <% } else { %>
                             <div class="text-center py-5 text-muted">
-                                <i class="bi bi-calendar-x display-4 d-block mb-3 opacity-50"></i>
+                                <span class="material-symbols-outlined display-4 d-block mb-3 opacity-50">event_busy</span>
                                 <p>No tienes citas programadas.</p>
-                                <a href="/citas/nueva" class="btn btn-primary btn-sm mt-2">Agendar ahora</a>
+                                <a href="/citas/nueva" class="btn btn-primary btn-sm mt-2 d-inline-flex align-items-center gap-1">
+                                    <span class="material-symbols-outlined fs-6">calendar_add_on</span> Agendar ahora
+                                </a>
                             </div>
                         <% } %>
                     </div>
@@ -47,8 +54,9 @@
 
             <div class="col-lg-7">
                 <div class="card shadow-sm border-0 h-100">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                        <h5 class="card-title fw-bold text-secondary"><i class="bi bi-clipboard2-pulse me-2 text-primary"></i>Historial Clínico</h5>
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0 d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">clinical_notes</span>
+                        <h5 class="card-title fw-bold text-secondary mb-0">Historial Clínico</h5>
                     </div>
                     <div class="card-body">
                         <% if (historial.length > 0) { %>
@@ -81,7 +89,7 @@
                             </div>
                         <% } else { %>
                             <div class="text-center py-5 text-muted">
-                                <i class="bi bi-journal-medical display-4 d-block mb-3 opacity-50"></i>
+                                <span class="material-symbols-outlined display-4 d-block mb-3 opacity-50">history_toggle_off</span>
                                 <p>Aún no tienes registros en tu historial clínico.</p>
                             </div>
                         <% } %>

@@ -1,0 +1,148 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/navbar') %>
+
+<div class="container mt-5 mb-5 d-flex flex-column min-vh-100">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">person_add</span>
+                    <h4 class="mb-0">Agendar Cita Manual</h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    
+                    <div class="mb-4 pb-4 border-bottom">
+                        <label class="form-label text-muted fw-bold">Buscar Paciente por RUT</label>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text"><span class="material-symbols-outlined">badge</span></span>
+                            <input type="text" id="rutBusqueda" class="form-control" placeholder="12345678-9">
+                            <button type="button" id="btnBuscar" class="btn btn-primary d-flex align-items-center gap-1">
+                                <span class="material-symbols-outlined">search</span> Buscar
+                            </button>
+                        </div>
+                        <div id="alertaBusqueda" class="alert d-none" role="alert"></div>
+                    </div>
+
+                    <form action="/admin/citas/nueva" method="POST" id="formCita" class="d-none">
+                        
+                        <input type="hidden" name="id_usuario" id="id_usuario_oculto" required>
+
+                        <div class="alert alert-info mb-4 d-flex align-items-center gap-3">
+                            <span class="material-symbols-outlined fs-1">account_circle</span>
+                            <div>
+                                <h6 class="mb-0 fw-bold" id="nombrePacienteEncontrado">Nombre del Paciente</h6>
+                                <small id="contactoPacienteEncontrado">Contacto</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Fecha</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined">calendar_month</span></span>
+                                    <input type="date" class="form-control" name="fecha" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Hora</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined">schedule</span></span>
+                                    <input type="time" class="form-control" name="hora" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted fw-bold">Profesional Asignado</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><span class="material-symbols-outlined">stethoscope</span></span>
+                                <select class="form-select" name="id_profesional" required>
+                                    <option value="" disabled selected>Seleccione un doctor...</option>
+                                    <% profesionales.forEach(prof => { %>
+                                        <option value="<%= prof.id_profesional %>">Dr/a. <%= prof.nombre %> <%= prof.apellidos %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted fw-bold">Procedimiento</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><span class="material-symbols-outlined">medical_services</span></span>
+                                <select class="form-select" name="id_procedimiento" required>
+                                    <option value="" disabled selected>Seleccione un procedimiento...</option>
+                                    <% procedimientos.forEach(proc => { %>
+                                        <option value="<%= proc.id_procedimiento %>"><%= proc.nombre %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="/admin/dashboard" class="btn btn-secondary d-flex align-items-center gap-1">
+                                <span class="material-symbols-outlined">arrow_back</span> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success d-flex align-items-center gap-1">
+                                <span class="material-symbols-outlined">save</span> Agendar Cita
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../partials/footer') %>
+
+<script>
+document.getElementById('btnBuscar').addEventListener('click', async () => {
+    const rut = document.getElementById('rutBusqueda').value;
+    const alerta = document.getElementById('alertaBusqueda');
+    const formulario = document.getElementById('formCita');
+
+    if(!rut) {
+        alerta.className = 'alert alert-warning mt-2';
+        alerta.innerHTML = '<span class="material-symbols-outlined align-middle">warning</span> Por favor ingrese un RUT';
+        alerta.classList.remove('d-none');
+        return;
+    }
+
+    try {
+        // Petición al servidor (a la ruta que creamos en el controlador)
+        const response = await fetch('/admin/citas/buscar-paciente', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rut })
+        });
+        
+        const data = await response.json();
+
+        if(data.success) {
+            // Ocultar alerta de error si la hubiera
+            alerta.classList.add('d-none');
+            
+            // Llenar los datos encontrados en la tarjeta de información
+            document.getElementById('nombrePacienteEncontrado').innerText = `${data.paciente.nombre} ${data.paciente.apellidos}`;
+            document.getElementById('contactoPacienteEncontrado').innerText = `Correo: ${data.paciente.correo} | Tel: ${data.paciente.telefono || 'N/A'}`;
+            
+            // Guardar el ID en el input oculto para enviarlo con el formulario
+            document.getElementById('id_usuario_oculto').value = data.paciente.id_usuario;
+
+            // Mostrar el formulario de agendamiento
+            formulario.classList.remove('d-none');
+        } else {
+            // Mostrar mensaje de error y ocultar el formulario
+            formulario.classList.add('d-none');
+            alerta.className = 'alert alert-danger mt-2';
+            alerta.innerHTML = `<span class="material-symbols-outlined align-middle">error</span> ${data.message}`;
+            alerta.classList.remove('d-none');
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+});
+</script>

@@ -1,7 +1,7 @@
 const patientModel = require('../models/patientModel');
 
 exports.showPerfil = async (req, res) => {
-    // 1. Validar que el usuario tenga sesión iniciada
+    // Validar que el usuario tenga sesión iniciada
     if (!req.session || !req.session.userId) {
         return res.redirect('/auth/login');
     }
@@ -9,11 +9,11 @@ exports.showPerfil = async (req, res) => {
     const id_usuario = req.session.userId;
 
     try {
-        // 2. Extraer los datos del modelo
+        // Extraer los datos del modelo
         const citasPendientes = await patientModel.getCitasPendientes(id_usuario);
         const historial = await patientModel.getHistorialClinico(id_usuario);
 
-        // 3. Renderizar la vista pasando los datos y el nombre del usuario
+        // Renderizar la vista pasando los datos y el nombre del usuario
         res.render('paciente/perfil', {
             nombreUsuario: req.session.nombre,
             citas: citasPendientes,

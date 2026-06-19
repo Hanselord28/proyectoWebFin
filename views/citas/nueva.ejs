@@ -1,86 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <%- include ('../partials/head') %>
-</head>
-<body class="bg-light">
 
-    <nav>
-        <%- include ('../partials/navbar') %>
-    </nav>
+<%- include ('../partials/head') %>
 
-    <div class="container mb-5">
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <%- include ('../partials/navbar') %>
+
+    <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card shadow-lg border-0 p-4">
-                    <h3 class="text-center text-primary mb-4 fw-bold">Agendar Nueva Cita</h3>
-
-                    <% if (typeof success !== 'undefined' && success) { %>
-                        <div class="alert alert-success text-center"><%= success %></div>
-                    <% } %>
-
-                    <form action="/citas/nueva" method="POST">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0 text-center">
+                        <h3 class="text-primary fw-bold d-flex align-items-center justify-content-center gap-2">
+                            <span class="material-symbols-outlined fs-2">calendar_add_on</span> Agendar Consulta
+                        </h3>
+                    </div>
+                    <div class="card-body p-4 p-md-5 pt-3">
                         
-                        <% if (!isLogged) { %>
-                            <div class="alert alert-info py-2 small text-center mb-4">
-                                Estás agendando como <strong>invitado</strong>. Si ya tienes cuenta, <a href="/auth/login">inicia sesión aquí</a>.
+                        <form action="/citas/nueva" method="POST">
+                            
+                            <% if (typeof isLogged === 'undefined' || !isLogged) { %>
+                                <div class="alert alert-info small mb-4 d-flex align-items-center gap-2">
+                                    <span class="material-symbols-outlined fs-5">info</span>
+                                    <div>Estás agendando como invitado. Si ya tienes cuenta, <a href="/auth/login" class="alert-link fw-bold">inicia sesión aquí</a>.</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted">Nombre</label>
+                                        <input type="text" class="form-control" name="nombre" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label text-muted">Apellidos</label>
+                                        <input type="text" class="form-control" name="apellidos" required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label text-muted">Correo Electrónico</label>
+                                    <input type="email" class="form-control" name="correo" required>
+                                </div>
+                                <hr class="mb-4 text-muted">
+                            <% } %>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">medical_services</span> Procedimiento</label>
+                                <select class="form-select" name="id_procedimiento" required>
+                                    <option value="" disabled selected>Selecciona un procedimiento...</option>
+                                    <% if (typeof procedimientos !== 'undefined') { %>
+                                        <% procedimientos.forEach(proc => { %>
+                                            <option value="<%= proc.id_procedimiento %>"><%= proc.nombre %></option>
+                                        <% }) %>
+                                    <% } %>
+                                </select>
                             </div>
+
+                            <div class="mb-4">
+                                <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">stethoscope</span> Profesional</label>
+                                <select class="form-select" name="id_profesional" required>
+                                    <option value="" disabled selected>Selecciona a tu dentista...</option>
+                                    <% if (typeof profesionales !== 'undefined') { %>
+                                        <% profesionales.forEach(prof => { %>
+                                            <option value="<%= prof.id_profesional %>">Dr/a. <%= prof.nombre %> <%= prof.apellidos %> - <%= prof.especialidad %></option>
+                                        <% }) %>
+                                    <% } %>
+                                </select>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label text-muted">Nombre</label>
-                                    <input type="text" class="form-control" name="nombre_invitado" required>
+                                    <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">calendar_today</span> Fecha</label>
+                                    <input type="date" class="form-control" name="fecha" required>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label text-muted">Apellidos</label>
-                                    <input type="text" class="form-control" name="apellidos_invitado" required>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">schedule</span> Hora</label>
+                                    <input type="time" class="form-control" name="hora" required>
                                 </div>
                             </div>
-                            <div class="mb-4 border-bottom pb-4">
-                                <label class="form-label text-muted">Correo Electrónico</label>
-                                <input type="email" class="form-control" name="correo_invitado" required>
+
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn btn-primary btn-lg fw-bold d-flex align-items-center justify-content-center gap-2">
+                                    <span class="material-symbols-outlined">event_available</span> Confirmar Cita
+                                </button>
                             </div>
-                        <% } %>
+                        </form>
 
-                        <div class="mb-3">
-                            <label class="form-label text-muted">¿Qué procedimiento necesitas?</label>
-                            <select class="form-select" name="id_procedimiento" required>
-                                <option value="" disabled selected>Selecciona un tratamiento...</option>
-                                <% procedimientos.forEach(proc => { %>
-                                    <option value="<%= proc.id_procedimiento %>"><%= proc.nombre %> (<%= proc.duracion_estimada_minutos %> min)</option>
-                                <% }) %>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Elige un Profesional (Opcional)</label>
-                            <select class="form-select" name="id_profesional" required>
-                                <option value="1" selected>Cualquier profesional disponible</option>
-                                <% profesionales.forEach(prof => { %>
-                                    <option value="<%= prof.id_profesional %>">Dr/a. <%= prof.nombre %> <%= prof.apellidos %> - <%= prof.especialidad %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label text-muted">Fecha</label>
-                                <input type="date" class="form-control" name="fecha" required>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label text-muted">Hora</label>
-                                <input type="time" class="form-control" name="hora" required>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">Confirmar Cita</button>
-                    </form>
-
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <footer>
-        <%- include ('../partials/footer') %>
-    </footer>
+
+    <%- include ('../partials/footer') %>
 </body>
 </html>
