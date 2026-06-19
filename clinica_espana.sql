@@ -76,3 +76,11 @@ INSERT INTO usuarios (nombre, apellidos, rut, correo, telefono, prevision, passw
 INSERT INTO profesionales (nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional) VALUES
 ('Juan', 'Pérez', 'Odontólogo General', 'juan.perez@clinicaespana.es', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', '15.000.000-1', 'COL-1234'),
 ('Julio', 'Iglesias', 'Ortodoncista', 'julio@iglesias.com', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', '5.000.000-1', 'COL-5678');
+
+
+INSERT INTO procedimientos (nombre, duracion_estimada) VALUES
+('Consulta general', 30),
+('Blanqueamiento', 60),
+('Ortodoncia', 45),
+('Extracción', 60),
+('Limpieza', 30);

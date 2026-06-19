@@ -14,12 +14,26 @@
                     </a>
                 </li>
                 
-                <% if (typeof isLogged !== 'undefined' && isLogged || typeof nombreUsuario !== 'undefined') { %>
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-1" href="/paciente/perfil">
-                            <span class="material-symbols-outlined fs-6">account_circle</span> Mi Perfil
-                        </a>
-                    </li>
+                <% if (isLogged) { %>
+                    <% if (userRol === 'admin') { %>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-1" href="/admin/dashboard">
+                                <span class="material-symbols-outlined fs-6">admin_panel_settings</span> Panel Admin
+                            </a>
+                        </li>
+                    <% } else if (userRol === 'profesional') { %>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-1" href="/profesional/dashboard">
+                                <span class="material-symbols-outlined fs-6">medical_services</span> Panel Profesional
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center gap-1" href="/paciente/perfil">
+                                <span class="material-symbols-outlined fs-6">account_circle</span> Mi Perfil
+                            </a>
+                        </li>
+                    <% } %>
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center gap-1" href="/auth/logout">
                             <span class="material-symbols-outlined fs-6">logout</span> Cerrar Sesión

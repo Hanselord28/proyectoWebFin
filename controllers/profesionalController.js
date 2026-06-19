@@ -1,13 +1,13 @@
 const profesionalModel = require('../models/profesionalModel');
 
 exports.showDashboard = async (req, res) => {
-    // Seguridad: Solo los profesionales pueden entrar
+    
     if (!req.session || req.session.rol !== 'profesional') {
         return res.redirect('/');
     }
 
     const id_profesional = req.session.userId;
-    const rutBusqueda = req.query.rut; // Atrapamos si el doctor buscó un RUT
+    const rutBusqueda = req.query.rut; 
 
     try {
         const citas = await profesionalModel.getCitasByProfesional(id_profesional);
@@ -15,7 +15,7 @@ exports.showDashboard = async (req, res) => {
         let pacienteEncontrado = null;
         let historialPaciente = [];
 
-        // Si el doctor ingresó un RUT en el buscador, extraemos el historial
+        
         if (rutBusqueda) {
             pacienteEncontrado = await profesionalModel.getPacienteByRut(rutBusqueda);
             if (pacienteEncontrado) {

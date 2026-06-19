@@ -1,12 +1,12 @@
 const pool = require('../config/db');
 
-// Para el Login
+
 const getProfesionalByEmail = async (correo) => {
     const [rows] = await pool.query('SELECT * FROM profesionales WHERE correo = ?', [correo]);
     return rows[0];
 };
 
-// Obtener las citas agendadas para el Dashboard
+
 const getCitasByProfesional = async (id_profesional) => {
     const query = `
         SELECT c.id_cita, c.fecha, c.hora, c.estado,
@@ -22,13 +22,13 @@ const getCitasByProfesional = async (id_profesional) => {
     return rows;
 };
 
-// Buscar a un paciente por su RUT
+
 const getPacienteByRut = async (rut) => {
     const [rows] = await pool.query("SELECT id_usuario, nombre, apellidos, rut, correo, telefono, prevision FROM usuarios WHERE rut = ? AND rol = 'paciente'", [rut]);
     return rows[0];
 };
 
-// Obtener el historial clínico de un paciente específico
+
 const getHistorialPaciente = async (id_paciente) => {
     const query = `
         SELECT h.fecha_registro, h.diagnostico, h.tratamiento_realizado,

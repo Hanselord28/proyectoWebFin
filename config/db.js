@@ -10,7 +10,7 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// Convertimos el pool para usar Promesas (async/await)
+
 const promisePool = pool.promise();
 
 module.exports = promisePool;

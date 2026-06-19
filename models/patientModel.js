@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-// Obtener citas pendientes del paciente
+
 const getCitasPendientes = async (id_usuario) => {
     const query = `
         SELECT c.id_cita, c.fecha, c.hora, c.estado, 
@@ -12,12 +12,16 @@ const getCitasPendientes = async (id_usuario) => {
         WHERE c.id_usuario = ? AND c.estado = 'pendiente'
         ORDER BY c.fecha ASC, c.hora ASC
     `;
-    const [rows] = await pool.query(query, [id_usuario]);
-    return rows;
+    try {
+        const [rows] = await pool.query(query, [id_usuario]);
+        return rows;
+    } catch (error) {
+        throw new Error(`Error obteniendo citas pendientes: ${error.message}`);
+    }
 };
 
 
-// historial clínico del paciente
+
 const getHistorialClinico = async (id_usuario) => {
     const query = `
         SELECT 
@@ -25,11 +29,15 @@ const getHistorialClinico = async (id_usuario) => {
             diagnostico, 
             tratamiento_realizado
         FROM historial_clinico
-        WHERE id_usuario = ?
+        WHERE id_paciente = ?
         ORDER BY fecha_registro DESC
     `;
-    const [rows] = await pool.query(query, [id_usuario]);
-    return rows;
+    try {
+        const [rows] = await pool.query(query, [id_usuario]);
+        return rows;
+    } catch (error) {
+        throw new Error(`Error obteniendo historial clínico: ${error.message}`);
+    }
 };
 
 module.exports = {
