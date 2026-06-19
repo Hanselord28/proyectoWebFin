@@ -16,16 +16,17 @@ const getCitasPendientes = async (id_usuario) => {
     return rows;
 };
 
-// Obtener historial clínico del paciente
+
+// historial clínico del paciente
 const getHistorialClinico = async (id_usuario) => {
     const query = `
-        SELECT h.fecha_registro, h.diagnostico, h.tratamiento_realizado,
-               proc.nombre AS procedimiento
-        FROM historial_clinico h
-        LEFT JOIN citas c ON h.id_cita = c.id_cita
-        LEFT JOIN procedimientos proc ON c.id_procedimiento = proc.id_procedimiento
-        WHERE h.id_paciente = ?
-        ORDER BY h.fecha_registro DESC
+        SELECT 
+            fecha_registro, 
+            diagnostico, 
+            tratamiento_realizado
+        FROM historial_clinico
+        WHERE id_usuario = ?
+        ORDER BY fecha_registro DESC
     `;
     const [rows] = await pool.query(query, [id_usuario]);
     return rows;

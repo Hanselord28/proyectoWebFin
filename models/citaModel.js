@@ -1,8 +1,10 @@
 const pool = require('../config/db');
 
 // Obtener todos los profesionales activos
+// Obtener todos los profesionales disponibles
 const getProfesionales = async () => {
-    const [rows] = await pool.query("SELECT * FROM profesionales WHERE estado = 'activo'");
+    const query = `SELECT * FROM profesionales`;
+    const [rows] = await pool.query(query);
     return rows;
 };
 
