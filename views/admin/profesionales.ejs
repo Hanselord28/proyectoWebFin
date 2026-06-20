@@ -1,0 +1,72 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/navbar') %>
+
+<div class="container mt-5 mb-5 d-flex flex-column min-vh-100">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-secondary d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined fs-3">medical_services</span> Listado de Profesionales
+        </h2>
+        <div class="d-flex gap-2">
+            <a href="/admin/dashboard" class="btn btn-secondary d-flex align-items-center gap-1">
+                <span class="material-symbols-outlined fs-5">arrow_back</span> Volver al Panel
+            </a>
+            <a href="/admin/profesionales/nuevo" class="btn btn-primary d-flex align-items-center gap-1">
+                <span class="material-symbols-outlined fs-5">medical_information</span> Nuevo Profesional
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>RUT / Colegiado</th>
+                            <th>Especialidad</th>
+                            <th>Correo</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(typeof profesionales !== 'undefined' && profesionales.length > 0) { %>
+                            <% profesionales.forEach(prof => { %>
+                                <tr>
+                                    <td>
+                                        <strong><%= prof.nombre %> <%= prof.apellidos %></strong>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted d-block">RUT: <%= prof.rut_personal %></small>
+                                        <small class="text-muted d-block">Col: <%= prof.rut_profesional %></small>
+                                    </td>
+                                    <td><span class="badge bg-info text-white"><%= prof.especialidad %></span></td>
+                                    <td><%= prof.correo %></td>
+                                    <td class="text-center">
+                                        <a href="/admin/profesionales/editar/<%= prof.id_profesional %>" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center justify-content-center" title="Editar">
+                                            <span class="material-symbols-outlined fs-6">edit</span>
+                                        </a>
+                                        <form action="/admin/profesionales/eliminar/<%= prof.id_profesional %>" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center justify-content-center" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar a este profesional?')">
+                                                <span class="material-symbols-outlined fs-6">delete</span>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <span class="material-symbols-outlined display-3 opacity-25 d-block mb-2">person_off</span>
+                                    No hay profesionales registrados en el sistema.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../partials/footer') %>

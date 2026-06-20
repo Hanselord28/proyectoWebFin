@@ -3,98 +3,149 @@
 <head>
     <%- include ('partials/head') %>
 </head>
-<body class="d-flex flex-column min-vh-100 bg-light">
-    <nav>
-        <%- include ('partials/navbar') %>
-    </nav>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navbar (Aparece transparente sobre el hero y luego sólido al hacer scroll, manejado vía css/js si es necesario) -->
+    <%- include ('partials/navbar') %>
 
-    <main>
-    <header class="hero-section text-center py-5 bg-light">
-        <div class="container">
-            <h1 class="display-4 fw-bold text-primary mb-3">Tu sonrisa en las mejores manos</h1>
-            <p class="lead text-muted mb-4">Especialistas en odontología general, ortodoncia, implantes y estética dental.</p>
-        </div>
-    </header>
-
-
-    <section class="position-relative mb-5">
-        
-        <div id="clinicaCarousel" class="carousel slide" data-bs-ride="carousel">
-            
-            <div class="carousel-indicators z-0">
-                <button type="button" data-bs-target="#clinicaCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#clinicaCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#clinicaCarousel" data-bs-slide-to="2"></button>
+    <main class="flex-grow-1">
+        <!-- HERO SECTION MODERNO -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content text-center">
+                <h1 class="display-3 fw-bolder mb-4">Queremos verte sonreír</h1>
+                <p class="lead mb-5 fw-normal">Especialistas en brindarte la mejor atención odontológica con tecnología de punta y un trato humano excepcional.</p>
+                <a href="/citas/nueva" class="btn btn-gradient btn-lg px-5 py-3 fs-5">
+                    <i class="bi bi-calendar-check me-2"></i> Agendar mi Consulta
+                </a>
             </div>
+        </section>
 
-            <div class="carousel-inner bg-dark">
-                <div class="carousel-item active" data-bs-interval="4000">
-                    <img src="/img/stock2.jpg" class="d-block w-100 opacity-75" style="height: 85vh; min-height: 850px; object-fit: cover;" alt="Recepción de la clínica">
+        <!-- SECCIÓN DE ESPECIALIDADES -->
+        <section class="py-5 bg-white">
+            <div class="container py-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title h1">Nuestras Especialidades</h2>
+                    <p class="text-muted mt-3 fs-5">Tratamientos integrales diseñados para toda tu familia</p>
                 </div>
-                <div class="carousel-item" data-bs-interval="4000">
-                    <img src="/img/stock3.jpg" class="d-block w-100 opacity-75" style="height: 85vh; min-height: 850px; object-fit: cover;" alt="Box dental equipado">
-                </div>
-                <div class="carousel-item" data-bs-interval="4000">
-                    <img src="/img/stock1.jpg" class="d-block w-100 opacity-75" style="height: 85vh; min-height: 850px; object-fit: cover;" alt="Sala de espera">
-                </div>
-            </div>
-
-            <button class="carousel-control-prev z-0" type="button" data-bs-target="#clinicaCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-            </button>
-            <button class="carousel-control-next z-0" type="button" data-bs-target="#clinicaCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-            </button>
-        </div>
-
-        <div class="position-absolute top-50 start-50 translate-middle w-100 z-3" style="pointer-events: none;">
-            <div class="container" style="pointer-events: auto;">
-                
-                <h2 class="text-center mb-4 text-white fw-bold shadow-sm">Nuestros Tratamientos</h2>
                 
                 <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="card h-100 border-0 shadow-lg text-center p-4 bg-white bg-opacity-90">
-                            <div class="card-body">
-                                <i class="bi bi-bandaid display-4 text-primary mb-3 d-block"></i>
-                                <h5 class="card-title fw-bold">Consulta General</h5>
-                                <p class="card-text text-muted">Evaluaciones completas, limpiezas y prevención para mantener tu salud bucal impecable.</p>
-                            </div>
+                    <!-- Servicio 1 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+                            <i class="bi bi-magic service-icon"></i>
+                            <h4 class="fw-bold mb-3">Estética Dental</h4>
+                            <p class="text-muted">Diseño de sonrisa, blanqueamiento y carillas para que luzcas una sonrisa perfecta y brillante.</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card h-100 border-0 shadow-lg text-center p-4 bg-white bg-opacity-90">
-                            <div class="card-body">
-                                <i class="bi bi-emoji-smile display-4 text-primary mb-3 d-block"></i>
-                                <h5 class="card-title fw-bold">Estética Dental</h5>
-                                <p class="card-text text-muted">Blanqueamientos y carillas para devolverte la confianza al sonreír.</p>
-                            </div>
+                    <!-- Servicio 2 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+                            <i class="bi bi-tools service-icon"></i>
+                            <h4 class="fw-bold mb-3">Implantes Dentales</h4>
+                            <p class="text-muted">Recupera la funcionalidad y estética de tu boca con implantes de titanio de última generación.</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card h-100 border-0 shadow-lg text-center p-4 bg-white bg-opacity-90">
-                            <div class="card-body">
-                                <i class="bi bi-tools display-4 text-primary mb-3 d-block"></i>
-                                <h5 class="card-title fw-bold">Ortodoncia e Implantes</h5>
-                                <p class="card-text text-muted">Soluciones avanzadas para alinear tus dientes y reponer piezas perdidas.</p>
-                            </div>
+                    <!-- Servicio 3 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+                            <i class="bi bi-braces service-icon"></i>
+                            <h4 class="fw-bold mb-3">Ortodoncia</h4>
+                            <p class="text-muted">Alineación dental mediante brackets tradicionales, estéticos o alineadores invisibles.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 4 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+                            <i class="bi bi-bandaid service-icon"></i>
+                            <h4 class="fw-bold mb-3">Endodoncia</h4>
+                            <p class="text-muted">Tratamiento de conducto seguro e indoloro para salvar tus piezas dentales afectadas.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 5 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+                            <i class="bi bi-shield-check service-icon"></i>
+                            <h4 class="fw-bold mb-3">Periodoncia</h4>
+                            <p class="text-muted">Cuidado y tratamiento de las encías para asegurar la base y salud de tus dientes a largo plazo.</p>
+                        </div>
+                    </div>
+                    <!-- Servicio 6 -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card">
+                            <i class="bi bi-person-hearts service-icon"></i>
+                            <h4 class="fw-bold mb-3">Odontopediatría</h4>
+                            <p class="text-muted">Atención dental especializada y amigable para los más pequeños del hogar.</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-12 text-center mt-5">
-                    <a href="/citas/nueva" class="btn btn-primary btn-lg px-5 py-3 shadow-lg fw-bold">
-                        Agendar mi consulta hoy
-                    </a>
-                </div>
-
             </div>
-        </div>
-    </section>
-</main>
+        </section>
 
+        <!-- SECCIÓN POR QUÉ ELEGIRNOS -->
+        <section class="about-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0 pe-lg-5">
+                        <h2 class="section-title h1 mb-4 text-start">Atención Personalizada</h2>
+                        <p class="lead text-muted mb-4">En Clínica Dental España nos preocupamos por cada detalle de tu salud bucal, brindando diagnósticos precisos y un trato cálido.</p>
+                        
+                        <div class="feature-item">
+                            <i class="bi bi-check2-circle feature-icon"></i>
+                            <div>
+                                <h5 class="fw-bold text-navy">Profesionales Especializados</h5>
+                                <p class="text-muted mb-0">Contamos con un equipo de odontólogos altamente capacitados en diversas áreas.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-display feature-icon"></i>
+                            <div>
+                                <h5 class="fw-bold text-navy">Tecnología de Punta</h5>
+                                <p class="text-muted mb-0">Equipamiento moderno para diagnósticos exactos y tratamientos menos invasivos.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="bi bi-clock-history feature-icon"></i>
+                            <div>
+                                <h5 class="fw-bold text-navy">Disponibilidad y Rapidez</h5>
+                                <p class="text-muted mb-0">Agenda tu cita de manera online, fácil y rápido desde cualquier dispositivo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="/img/stock1.jpg" alt="Instalaciones de Clínica Dental España" class="about-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UBICACIÓN / DÓNDE ENCONTRARNOS -->
+        <section class="py-5 bg-white">
+            <div class="container py-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title h1">Dónde Encontrarnos</h2>
+                    <p class="text-muted mt-3 fs-5">Visítanos en nuestras modernas instalaciones en el corazón de Rancagua</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="ratio ratio-21x9 shadow-lg rounded overflow-hidden">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3310.2311823907727!2d-70.74100652431711!3d-34.1724497731118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96634316d3f2ec8d%3A0xc3b832b8eb30a21f!2sAv.%20Espa%C3%B1a%20793%2C%20Rancagua%2C%20O&#39;Higgins!5e0!3m2!1sen!2scl!4v1700000000000!5m2!1sen!2scl" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="py-5 text-white text-center" style="background: linear-gradient(135deg, var(--color-cyan), var(--color-cyan-light));">
+            <div class="container py-4">
+                <h2 class="display-5 fw-bold mb-3 text-white">¿Listo para mejorar tu sonrisa?</h2>
+                <p class="lead mb-4 text-white">No esperes más, da el primer paso hacia una mejor salud bucal hoy mismo.</p>
+                <a href="/citas/nueva" class="btn btn-light text-navy fw-bold btn-lg px-5 rounded-pill shadow-lg">Solicitar Presupuesto</a>
+            </div>
+        </section>
+
+    </main>
     
     <%- include ('partials/footer') %>
     

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<%- include ('../partials/head') %>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <nav class="navbar navbar-dark bg-info shadow-sm">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/profesional/dashboard">
+                <span class="material-symbols-outlined">stethoscope</span>
+                Panel Clínico - Registro de Consulta
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-dark fw-bold d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-5">person</span> Dr/a. <%= nombreDoc %>
+                </span>
+                <a href="/auth/logout" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined fs-6">logout</span> Cerrar Sesión
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5 d-flex flex-column min-vh-100">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                
+                <div class="card shadow-sm border-0 mb-4 bg-info bg-opacity-10">
+                    <div class="card-body">
+                        <h5 class="fw-bold text-secondary mb-3 d-flex align-items-center gap-2">
+                            <span class="material-symbols-outlined">patient_list</span> Información del Paciente y Cita
+                        </h5>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="mb-1"><strong>Paciente:</strong> <%= cita.paciente_nombre %> <%= cita.paciente_apellidos %></p>
+                                <p class="mb-1"><strong>RUT:</strong> <%= cita.rut %></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="mb-1"><strong>Procedimiento Agendado:</strong> <%= cita.procedimiento %></p>
+                                <p class="mb-1"><strong>Fecha:</strong> <%= new Date(cita.fecha).toLocaleDateString('es-ES') %> a las <%= cita.hora.substring(0, 5) %> hrs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
+                        <span class="material-symbols-outlined">note_add</span>
+                        <h4 class="mb-0">Formulario de Registro Clínico</h4>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <form action="/profesional/consulta/<%= cita.id_cita %>" method="POST">
+                            
+                            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Desarrollo Clínico</h6>
+                            <div class="mb-3">
+                                <label class="form-label text-muted fw-bold">Diagnóstico de la sesión</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">health_and_safety</span></span>
+                                    <textarea class="form-control" name="diagnostico" rows="2" placeholder="Describa el diagnóstico inicial o estado del paciente" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label text-muted fw-bold">Tratamiento o procedimiento realizado</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">healing</span></span>
+                                    <textarea class="form-control" name="tratamiento_realizado" rows="3" placeholder="Detalle los procedimientos aplicados, medicamentos, etc." required></textarea>
+                                </div>
+                            </div>
+
+                            <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Información Administrativa / Adicional</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted fw-bold">Presupuesto del procedimiento ($)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><span class="material-symbols-outlined fs-5">payments</span></span>
+                                        <input type="number" class="form-control" name="presupuesto" min="0" placeholder="Ej: 50000">
+                                    </div>
+                                    <div class="form-text text-muted">Puede dejarlo en 0 si no aplica cobro o ya está prepagado.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted fw-bold">Observaciones Adicionales</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><span class="material-symbols-outlined fs-5">comment</span></span>
+                                        <textarea class="form-control" name="observaciones" rows="2" placeholder="Recomendaciones para próxima visita, alergias descubiertas, etc."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="/profesional/dashboard" class="btn btn-secondary d-flex align-items-center gap-1">
+                                    <span class="material-symbols-outlined">arrow_back</span> Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary d-flex align-items-center gap-1 fw-bold" onclick="return confirm('¿Confirma guardar este registro? La cita será marcada como completada y no aparecerá en pendientes.')">
+                                    <span class="material-symbols-outlined">save</span> Guardar e Ingresar Registro
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include ('../partials/footer') %>
+</body>
+</html>

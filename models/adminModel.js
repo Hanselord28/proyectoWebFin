@@ -90,6 +90,40 @@ const addProfesional = async (nombre, apellidos, especialidad, correo, password,
     );
 };
 
+// Obtener todos los profesionales (listado completo)
+const getAllProfesionalesFull = async () => {
+    const [rows] = await pool.query('SELECT * FROM profesionales ORDER BY nombre ASC');
+    return rows;
+};
+
+// Obtener un profesional por ID
+const getProfesionalById = async (id) => {
+    const [rows] = await pool.query('SELECT * FROM profesionales WHERE id_profesional = ?', [id]);
+    return rows[0];
+};
+
+// Actualizar un profesional
+const updateProfesional = async (id, nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional) => {
+    if (password && password.trim() !== '') {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        await pool.query(
+            'UPDATE profesionales SET nombre = ?, apellidos = ?, especialidad = ?, correo = ?, password = ?, rut_personal = ?, rut_profesional = ? WHERE id_profesional = ?',
+            [nombre, apellidos, especialidad, correo, hashedPassword, rut_personal, rut_profesional, id]
+        );
+    } else {
+        await pool.query(
+            'UPDATE profesionales SET nombre = ?, apellidos = ?, especialidad = ?, correo = ?, rut_personal = ?, rut_profesional = ? WHERE id_profesional = ?',
+            [nombre, apellidos, especialidad, correo, rut_personal, rut_profesional, id]
+        );
+    }
+};
+
+// Eliminar un profesional
+const deleteProfesional = async (id) => {
+    await pool.query('DELETE FROM profesionales WHERE id_profesional = ?', [id]);
+};
+
 module.exports = {
     getAllCitas,
     getStats,
@@ -100,5 +134,9 @@ module.exports = {
     getProcedimientos,
     addProfesional,
     getPacienteByRut,
-    addCitaAdmin
+    addCitaAdmin,
+    getAllProfesionalesFull,
+    getProfesionalById,
+    updateProfesional,
+    deleteProfesional
 };

@@ -1,0 +1,102 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/navbar') %>
+
+<div class="container mt-5 mb-5 d-flex flex-column min-vh-100">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-dark d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined">edit</span>
+                    <h4 class="mb-0">Editar Profesional</h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form action="/admin/profesionales/editar/<%= profesional.id_profesional %>" method="POST">
+                        
+                        <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Datos Clínicos y Personales</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Nombre</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
+                                    <input type="text" class="form-control" name="nombre" value="<%= profesional.nombre %>" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Apellidos</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
+                                    <input type="text" class="form-control" name="apellidos" value="<%= profesional.apellidos %>" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">RUT Personal (DNI/NIE)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">badge</span></span>
+                                    <input type="text" class="form-control" name="rut_personal" value="<%= profesional.rut_personal %>" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Nº de Colegiado</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">assignment_ind</span></span>
+                                    <input type="text" class="form-control" name="rut_profesional" value="<%= profesional.rut_profesional %>" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <label class="form-label text-muted fw-bold">Especialidad</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">stethoscope</span></span>
+                                    <select class="form-select" name="especialidad" required>
+                                        <option value="Odontólogo General" <%= profesional.especialidad === 'Odontólogo General' ? 'selected' : '' %>>Odontólogo General</option>
+                                        <option value="Ortodoncista" <%= profesional.especialidad === 'Ortodoncista' ? 'selected' : '' %>>Ortodoncista</option>
+                                        <option value="Endodoncista" <%= profesional.especialidad === 'Endodoncista' ? 'selected' : '' %>>Endodoncista</option>
+                                        <option value="Cirujano Maxilofacial" <%= profesional.especialidad === 'Cirujano Maxilofacial' ? 'selected' : '' %>>Cirujano Maxilofacial</option>
+                                        <option value="Periodoncista" <%= profesional.especialidad === 'Periodoncista' ? 'selected' : '' %>>Periodoncista</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Acceso al Sistema</h6>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">mail</span></span>
+                                    <input type="email" class="form-control" name="correo" value="<%= profesional.correo %>" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted fw-bold">Nueva Contraseña (Opcional)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><span class="material-symbols-outlined fs-5">lock</span></span>
+                                    <input type="password" class="form-control" name="password" placeholder="Dejar en blanco para mantener actual">
+                                </div>
+                                <div class="form-text text-muted">Sólo rellene este campo si desea cambiar la contraseña del profesional.</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/admin/profesionales" class="btn btn-secondary d-flex align-items-center gap-1">
+                                <span class="material-symbols-outlined">arrow_back</span> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-warning d-flex align-items-center gap-1 text-dark fw-bold">
+                                <span class="material-symbols-outlined">save</span> Actualizar Profesional
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../partials/footer') %>

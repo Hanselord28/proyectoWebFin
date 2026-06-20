@@ -200,3 +200,71 @@ exports.processAddProfesional = async (req, res) => {
         res.status(500).send("Hubo un error al registrar. Verifique que el correo o RUT no existan ya.");
     }
 };
+
+// Listar todos los profesionales
+exports.showProfesionales = async (req, res) => {
+    if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
+
+    try {
+        const profesionales = await adminModel.getAllProfesionalesFull();
+        res.render('admin/profesionales', {
+            nombreAdmin: req.session.nombre,
+            profesionales: profesionales
+        });
+    } catch (error) {
+        console.error("Error al listar profesionales:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+};
+
+// Mostrar el formulario de edición de profesional
+exports.showEditProfesional = async (req, res) => {
+    if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
+
+    try {
+        const idProfesional = req.params.id;
+        const profesional = await adminModel.getProfesionalById(idProfesional);
+
+        if (!profesional) return res.redirect('/admin/profesionales');
+
+        res.render('admin/editar_profesional', {
+            profesional,
+            nombreAdmin: req.session.nombre
+        });
+    } catch (error) {
+        console.error("Error al cargar vista de edición de profesional:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+};
+
+// Procesar edición de profesional
+exports.processEditProfesional = async (req, res) => {
+    if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
+
+    try {
+        const idProfesional = req.params.id;
+        const { nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional } = req.body;
+
+        await adminModel.updateProfesional(idProfesional, nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional);
+
+        res.redirect('/admin/profesionales');
+    } catch (error) {
+        console.error("Error al actualizar profesional:", error);
+        res.status(500).send("Error interno del servidor al actualizar profesional");
+    }
+};
+
+// Eliminar un profesional
+exports.deleteProfesional = async (req, res) => {
+    if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
+
+    try {
+        const idProfesional = req.params.id;
+        await adminModel.deleteProfesional(idProfesional);
+
+        res.redirect('/admin/profesionales');
+    } catch (error) {
+        console.error("Error al eliminar profesional:", error);
+        res.status(500).send("Error al eliminar el profesional. Asegúrese de que no tenga citas asociadas.");
+    }
+};

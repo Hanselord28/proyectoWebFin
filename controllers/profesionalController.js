@@ -36,3 +36,70 @@ exports.showDashboard = async (req, res) => {
         res.status(500).send("Error interno del servidor");
     }
 };
+
+// Mostrar formulario para registrar la consulta
+exports.showRegistroConsulta = async (req, res) => {
+    if (!req.session || req.session.rol !== 'profesional') {
+        return res.redirect('/');
+    }
+
+    try {
+        const id_cita = req.params.id_cita;
+        const id_profesional = req.session.userId;
+
+        // Validar que la cita exista y pertenezca al profesional
+        const cita = await profesionalModel.getCitaByIdForProfesional(id_cita, id_profesional);
+        if (!cita) {
+            return res.redirect('/profesional/dashboard');
+        }
+
+        res.render('profesional/registro_consulta', {
+            nombreDoc: req.session.nombre,
+            cita: cita
+        });
+
+    } catch (error) {
+        console.error("Error al cargar formulario de registro:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+};
+
+// Procesar el registro de la consulta
+exports.processRegistroConsulta = async (req, res) => {
+    if (!req.session || req.session.rol !== 'profesional') {
+        return res.redirect('/');
+    }
+
+    try {
+        const id_cita = req.params.id_cita;
+        const id_profesional = req.session.userId;
+        const { diagnostico, tratamiento_realizado, presupuesto, observaciones } = req.body;
+
+        // Validar la cita
+        const cita = await profesionalModel.getCitaByIdForProfesional(id_cita, id_profesional);
+        if (!cita) {
+            return res.redirect('/profesional/dashboard');
+        }
+
+        // Guardar el historial clínico
+        await profesionalModel.addHistorialClinico(
+            cita.id_usuario, 
+            id_cita, 
+            diagnostico, 
+            tratamiento_realizado, 
+            presupuesto || 0, 
+            id_profesional, 
+            observaciones || ''
+        );
+
+        // Actualizar el estado de la cita a completada
+        await profesionalModel.updateEstadoCita(id_cita, 'completada');
+
+        // Redirigir al dashboard
+        res.redirect('/profesional/dashboard');
+
+    } catch (error) {
+        console.error("Error al guardar el registro de la consulta:", error);
+        res.status(500).send("Error interno del servidor al guardar el registro");
+    }
+};

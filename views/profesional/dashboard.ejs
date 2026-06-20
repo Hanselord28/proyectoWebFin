@@ -46,6 +46,11 @@
                                             <span class="material-symbols-outlined fs-6">dentistry</span> <%= cita.procedimiento %>
                                         </p>
                                         <small class="text-muted"><strong>RUT:</strong> <%= cita.rut %> | <strong>Fecha:</strong> <%= new Date(cita.fecha).toLocaleDateString('es-ES') %></small>
+                                        <div class="mt-2 text-end">
+                                            <a href="/profesional/consulta/<%= cita.id_cita %>" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1">
+                                                <span class="material-symbols-outlined fs-6">medical_services</span> Atender Cita
+                                            </a>
+                                        </div>
                                     </div>
                                 <% }) %>
                             </div>
@@ -109,7 +114,19 @@
                                                     <tr>
                                                         <td class="text-nowrap"><%= new Date(registro.fecha_registro).toLocaleDateString('es-ES') %></td>
                                                         <td><span class="badge bg-secondary"><%= registro.procedimiento || 'General' %></span></td>
-                                                        <td><strong>D:</strong> <%= registro.diagnostico %><br><span class="text-muted"><strong>T:</strong> <%= registro.tratamiento_realizado %></span></td>
+                                                        <td>
+                                                            <strong>D:</strong> <%= registro.diagnostico %><br>
+                                                            <span class="text-muted"><strong>T:</strong> <%= registro.tratamiento_realizado %></span>
+                                                            <% if(registro.observaciones) { %>
+                                                                <br><small class="text-muted"><strong>Obs:</strong> <%= registro.observaciones %></small>
+                                                            <% } %>
+                                                            <% if(registro.presupuesto && registro.presupuesto > 0) { %>
+                                                                <br><small class="text-success fw-bold">Presupuesto: $<%= Number(registro.presupuesto).toLocaleString('es-CL') %></small>
+                                                            <% } %>
+                                                            <% if(registro.doc_nombre) { %>
+                                                                <br><small class="text-info"><strong>Atendido por:</strong> Dr/a. <%= registro.doc_nombre %> <%= registro.doc_apellidos %></small>
+                                                            <% } %>
+                                                        </td>
                                                     </tr>
                                                 <% }) %>
                                             </tbody>

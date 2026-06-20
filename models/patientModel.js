@@ -19,7 +19,7 @@ const getCitasPendientes = async (id_usuario) => {
 // Obtener historial clínico del paciente
 const getHistorialClinico = async (id_usuario) => {
     const query = `
-        SELECT h.fecha_registro, h.diagnostico, h.tratamiento_realizado,
+        SELECT h.fecha_registro, h.diagnostico, h.tratamiento_realizado, h.presupuesto,
                proc.nombre AS procedimiento
         FROM historial_clinico h
         LEFT JOIN citas c ON h.id_cita = c.id_cita

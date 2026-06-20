@@ -67,6 +67,7 @@
                                             <th>Fecha</th>
                                             <th>Procedimiento</th>
                                             <th>Diagnóstico & Tratamiento</th>
+                                            <th>Presupuesto</th>
                                         </tr>
                                     </thead>
                                     <tbody class="small">
@@ -81,6 +82,13 @@
                                                 <td>
                                                     <strong>Diag:</strong> <%= registro.diagnostico %><br>
                                                     <span class="text-muted"><strong>Tratamiento:</strong> <%= registro.tratamiento_realizado %></span>
+                                                </td>
+                                                <td>
+                                                    <% if(registro.presupuesto && registro.presupuesto > 0) { %>
+                                                        <span class="text-success fw-bold">$<%= Number(registro.presupuesto).toLocaleString('es-CL') %></span>
+                                                    <% } else { %>
+                                                        <span class="text-muted">-</span>
+                                                    <% } %>
                                                 </td>
                                             </tr>
                                         <% }) %>

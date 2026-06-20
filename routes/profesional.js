@@ -5,4 +5,10 @@ const profesionalController = require('../controllers/profesionalController');
 // Ruta GET: Muestra el panel y procesa las búsquedas de RUT
 router.get('/dashboard', profesionalController.showDashboard);
 
+// Ruta GET: Mostrar formulario para registrar consulta (historial clínico)
+router.get('/consulta/:id_cita', profesionalController.showRegistroConsulta);
+
+// Ruta POST: Procesar y guardar el registro de la consulta
+router.post('/consulta/:id_cita', profesionalController.processRegistroConsulta);
+
 module.exports = router;
