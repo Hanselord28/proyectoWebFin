@@ -49,34 +49,35 @@ CREATE TABLE IF NOT EXISTS citas (
 );
 
 -- Tabla de Historial Clínico
+-- CORRECCIÓN: Se ajustaron los nombres de las columnas para coincidir con tu modelo de Node.js
 CREATE TABLE IF NOT EXISTS historial_clinico (
     id_historial INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL,
+    id_paciente INT NOT NULL, 
+    id_cita INT, 
     diagnostico TEXT NOT NULL,
-    tratamiento TEXT NOT NULL,
-    fecha DATE DEFAULT CURRENT_DATE,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+    tratamiento_realizado TEXT NOT NULL, 
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (id_paciente) REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_cita) REFERENCES citas(id_cita) ON DELETE SET NULL
 );
 
-
 -- ==========================================
---          DATOS DE PRUEBA
+--          DATOS DE PRUEBA CORREGIDOS
 -- ==========================================
 
-
--- Administrador y Pacientes
+-- Administrador y Pacientes (Todos con clave: 123456)
 INSERT INTO usuarios (nombre, apellidos, rut, correo, telefono, prevision, password, rol) VALUES
-('Admin', 'Principal', '11.111.111-1', 'admin@clinicaespana.es', '+56911111111', 'Isapre', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'admin'),
-('Carlos', 'Sanhueza', '22.222.222-2', 'carlos@correo.cl', '+56922222222', 'Fonasa', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'paciente'),
-('María', 'González', '33.333.333-3', 'maria@correo.cl', '+56933333333', 'Isapre', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'paciente'),
-('Maguito', 'Explosivo', '20.000.000-1', 'maguito@explosivo.cl', '+56944444444', 'Fonasa', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', 'paciente');
+('Admin', 'Principal', '11.111.111-1', 'admin@clinicaespana.es', '+56911111111', 'Isapre', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', 'admin'),
+('Carlos', 'Sanhueza', '22.222.222-2', 'carlos@correo.cl', '+56922222222', 'Fonasa', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', 'paciente'),
+('María', 'González', '33.333.333-3', 'maria@correo.cl', '+56933333333', 'Isapre', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', 'paciente'),
+('Maguito', 'Explosivo', '20.000.000-1', 'maguito@explosivo.cl', '+56944444444', 'Fonasa', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', 'paciente');
 
--- Profesionales
+-- Profesionales (Todos con clave: 123456)
 INSERT INTO profesionales (nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional) VALUES
-('Juan', 'Pérez', 'Odontólogo General', 'juan.perez@clinicaespana.es', '$2b$10$GWIDoVSmIVfNJs8ID8lJ5eeRLkSlqvK7kmDjP8JAMo61g/zHmzZyu', '15.000.000-1', 'COL-1234'),
-('Julio', 'Iglesias', 'Ortodoncista', 'julio@iglesias.com', '$2b$10$eCzcjdNBJbDNuY44JNeIpOHGAgaBblwUMl6ns0R2dtmeIOnSODEJO', '5.000.000-1', 'COL-5678');
+('Juan', 'Pérez', 'Odontólogo General', 'juan.perez@clinicaespana.es', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', '15.000.000-1', 'COL-1234'),
+('Julio', 'Iglesias', 'Ortodoncista', 'julio@iglesias.com', '$2b$10$0EKInLBZpEQOTRhP4Q0hpereveMLl9.hKurEH9fFopz8lUXDvvR3O', '5.000.000-1', 'COL-5678');
 
--- Procedimientos Médicos
+
 INSERT INTO procedimientos (nombre, duracion_estimada) VALUES
 ('Consulta general', 30),
 ('Blanqueamiento', 60),

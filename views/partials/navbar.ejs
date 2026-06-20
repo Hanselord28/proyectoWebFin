@@ -17,11 +17,25 @@
                 </li>
                 
                 <% if (typeof isLogged !== 'undefined' && isLogged || typeof nombreUsuario !== 'undefined') { %>
-                    <li class="nav-item me-3">
-                        <a class="nav-link text-white fw-bold d-flex align-items-center gap-1" href="/paciente/perfil">
-                            <i class="bi bi-person-circle"></i> Mi Perfil
-                        </a>
-                    </li>
+                    <% if (typeof userRol !== 'undefined' && userRol === 'admin') { %>
+                        <li class="nav-item me-3">
+                            <a class="nav-link text-white fw-bold d-flex align-items-center gap-1" href="/admin/dashboard">
+                                <i class="bi bi-shield-lock"></i> Panel Admin
+                            </a>
+                        </li>
+                    <% } else if (typeof userRol !== 'undefined' && userRol === 'profesional') { %>
+                        <li class="nav-item me-3">
+                            <a class="nav-link text-white fw-bold d-flex align-items-center gap-1" href="/profesional/dashboard">
+                                <i class="bi bi-heart-pulse"></i> Panel Profesional
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item me-3">
+                            <a class="nav-link text-white fw-bold d-flex align-items-center gap-1" href="/paciente/perfil">
+                                <i class="bi bi-person-circle"></i> Mi Perfil
+                            </a>
+                        </li>
+                    <% } %>
                     <li class="nav-item me-3">
                         <a class="nav-link text-white fw-bold d-flex align-items-center gap-1" href="/auth/logout">
                             <i class="bi bi-box-arrow-right"></i> Cerrar Sesión

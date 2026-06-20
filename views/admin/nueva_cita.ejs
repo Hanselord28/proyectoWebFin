@@ -112,7 +112,7 @@ document.getElementById('btnBuscar').addEventListener('click', async () => {
     }
 
     try {
-        // Petición al servidor (a la ruta que creamos en el controlador)
+        
         const response = await fetch('/admin/citas/buscar-paciente', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -122,20 +122,20 @@ document.getElementById('btnBuscar').addEventListener('click', async () => {
         const data = await response.json();
 
         if(data.success) {
-            // Ocultar alerta de error si la hubiera
+            
             alerta.classList.add('d-none');
             
-            // Llenar los datos encontrados en la tarjeta de información
+            
             document.getElementById('nombrePacienteEncontrado').innerText = `${data.paciente.nombre} ${data.paciente.apellidos}`;
             document.getElementById('contactoPacienteEncontrado').innerText = `Correo: ${data.paciente.correo} | Tel: ${data.paciente.telefono || 'N/A'}`;
             
-            // Guardar el ID en el input oculto para enviarlo con el formulario
+            
             document.getElementById('id_usuario_oculto').value = data.paciente.id_usuario;
 
-            // Mostrar el formulario de agendamiento
+            
             formulario.classList.remove('d-none');
         } else {
-            // Mostrar mensaje de error y ocultar el formulario
+            
             formulario.classList.add('d-none');
             alerta.className = 'alert alert-danger mt-2';
             alerta.innerHTML = `<span class="material-symbols-outlined align-middle">error</span> ${data.message}`;
