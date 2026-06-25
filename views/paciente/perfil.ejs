@@ -33,9 +33,16 @@
                                             <span class="material-symbols-outlined fs-6">schedule</span> 
                                             <%= new Date(cita.fecha).toLocaleDateString('es-ES') %> a las <%= cita.hora.substring(0, 5) %> hrs
                                         </p>
-                                        <small class="text-muted d-flex align-items-center gap-1">
+                                        <small class="text-muted d-flex align-items-center gap-1 mb-3">
                                             <span class="material-symbols-outlined fs-6">stethoscope</span> Dr/a. <%= cita.doc_nombre %> <%= cita.doc_apellidos %>
                                         </small>
+                                        <div class="text-end">
+                                            <form action="/paciente/citas/cancelar/<%= cita.id_cita %>" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta cita? No podrás deshacer esta acción.');">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1">
+                                                    <span class="material-symbols-outlined fs-6">cancel</span> Cancelar Cita
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 <% }) %>
                             </div>

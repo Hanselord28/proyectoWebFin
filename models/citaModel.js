@@ -15,16 +15,58 @@ const getProcedimientos = async () => {
 };
 
 
+const getHorasOcupadas = async (id_profesional, fecha) => {
+    const query = `SELECT hora FROM citas WHERE id_profesional = ? AND fecha = ? AND estado != 'cancelada'`;
+    const [rows] = await pool.query(query, [id_profesional, fecha]);
+    return rows.map(r => r.hora.substring(0, 5)); // Devolver 'HH:MM'
+};
+
 const createCita = async (id_usuario, id_profesional, id_procedimiento, fecha, hora) => {
-    const [result] = await pool.query(
-        'INSERT INTO citas (id_usuario, id_profesional, id_procedimiento, fecha, hora, estado) VALUES (?, ?, ?, ?, ?, ?)',
-        [id_usuario, id_profesional, id_procedimiento, fecha, hora, 'pendiente']
+    // 1. Verificar disponibilidad en la tabla de citas para la fecha
+    const [dispRows] = await pool.query(
+        'SELECT citas_ocupadas FROM disponibilidad_diaria WHERE id_profesional = ? AND fecha = ?', 
+        [id_profesional, fecha]
     );
-    return result;
+
+    if (dispRows.length > 0 && dispRows[0].citas_ocupadas >= 9) {
+        throw new Error('El profesional ha alcanzado el máximo de citas (9) para este día.');
+    }
+
+    // 2. Verificar que la hora específica no esté ocupada
+    const horasOcupadas = await getHorasOcupadas(id_profesional, fecha);
+    if (horasOcupadas.includes(hora.substring(0, 5))) {
+        throw new Error('La hora seleccionada ya no está disponible.');
+    }
+
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        const [result] = await connection.query(
+            'INSERT INTO citas (id_usuario, id_profesional, id_procedimiento, fecha, hora, estado) VALUES (?, ?, ?, ?, ?, ?)',
+            [id_usuario, id_profesional, id_procedimiento, fecha, hora, 'pendiente']
+        );
+
+        await connection.query(
+            `INSERT INTO disponibilidad_diaria (id_profesional, fecha, citas_ocupadas) 
+             VALUES (?, ?, 1) 
+             ON DUPLICATE KEY UPDATE citas_ocupadas = citas_ocupadas + 1`,
+            [id_profesional, fecha]
+        );
+
+        await connection.commit();
+        return result;
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+    } finally {
+        connection.release();
+    }
 };
 
 module.exports = {
     getProfesionales,
     getProcedimientos,
+    getHorasOcupadas,
     createCita
 };

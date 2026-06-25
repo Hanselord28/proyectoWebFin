@@ -36,9 +36,15 @@
                                         <input type="text" class="form-control" name="apellidos_invitado" required>
                                     </div>
                                 </div>
-                                <div class="mb-4">
-                                    <label class="form-label text-muted">Correo Electrónico</label>
-                                    <input type="email" class="form-control" name="correo_invitado" required>
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label text-muted">RUT</label>
+                                        <input type="text" class="form-control" name="rut_invitado" placeholder="Ej: 12.345.678-9" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label text-muted">Correo Electrónico</label>
+                                        <input type="email" class="form-control" name="correo_invitado" required>
+                                    </div>
                                 </div>
                                 <hr class="mb-4 text-muted">
                             <% } %>
@@ -57,7 +63,7 @@
 
                             <div class="mb-4">
                                 <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">stethoscope</span> Profesional</label>
-                                <select class="form-select" name="id_profesional" required>
+                                <select class="form-select" name="id_profesional" id="profesionalSelect" required>
                                     <option value="" disabled selected>Selecciona a tu dentista...</option>
                                     <% if (typeof profesionales !== 'undefined') { %>
                                         <% profesionales.forEach(prof => { %>
@@ -70,11 +76,13 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">calendar_today</span> Fecha</label>
-                                    <input type="date" class="form-control" name="fecha" required>
+                                    <input type="date" class="form-control" name="fecha" id="fechaSelect" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label text-muted d-flex align-items-center gap-1"><span class="material-symbols-outlined fs-6">schedule</span> Hora</label>
-                                    <input type="time" class="form-control" name="hora" required>
+                                    <select class="form-select" name="hora" id="horaSelect" required disabled>
+                                        <option value="" selected>Seleccione fecha y doctor...</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -92,5 +100,69 @@
     </div>
 
     <%- include ('../partials/footer') %>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fechaInput = document.getElementById('fechaSelect');
+            const profInput = document.getElementById('profesionalSelect');
+            const horaSelect = document.getElementById('horaSelect');
+
+            // Set min to today and max to today + 14 days
+            const today = new Date();
+            const minDate = today.toISOString().split('T')[0];
+            const maxDateObj = new Date(today);
+            maxDateObj.setDate(maxDateObj.getDate() + 14);
+            const maxDate = maxDateObj.toISOString().split('T')[0];
+            
+            fechaInput.min = minDate;
+            fechaInput.max = maxDate;
+
+            async function checkDisponibilidad() {
+                const fecha = fechaInput.value;
+                const id_profesional = profInput.value;
+
+                if (!fecha || !id_profesional) {
+                    horaSelect.innerHTML = '<option value="" selected>Seleccione fecha y doctor...</option>';
+                    horaSelect.disabled = true;
+                    return;
+                }
+
+                horaSelect.innerHTML = '<option value="" selected>Cargando disponibilidad...</option>';
+                horaSelect.disabled = true;
+
+                try {
+                    const response = await fetch('/citas/disponibilidad', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fecha, id_profesional })
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        horaSelect.innerHTML = '<option value="" selected>Seleccione una hora...</option>';
+                        if (data.disponibles.length === 0) {
+                            horaSelect.innerHTML = '<option value="" disabled selected>No hay horas disponibles este día</option>';
+                        } else {
+                            data.disponibles.forEach(hora => {
+                                const option = document.createElement('option');
+                                option.value = hora;
+                                option.textContent = hora + ' hrs';
+                                horaSelect.appendChild(option);
+                            });
+                            horaSelect.disabled = false;
+                        }
+                    } else {
+                        horaSelect.innerHTML = '<option value="" disabled selected>Error cargando horas</option>';
+                    }
+                } catch (error) {
+                    console.error("Error fetching disponibilidad:", error);
+                    horaSelect.innerHTML = '<option value="" disabled selected>Error de red</option>';
+                }
+            }
+
+            fechaInput.addEventListener('change', checkDisponibilidad);
+            profInput.addEventListener('change', checkDisponibilidad);
+        });
+    </script>
 </body>
 </html>

@@ -19,7 +19,7 @@ exports.showNuevaCita = async (req, res) => {
 
 
 exports.processNuevaCita = async (req, res) => {
-    const { id_procedimiento, id_profesional, fecha, hora, nombre_invitado, apellidos_invitado, correo_invitado } = req.body;
+    const { id_procedimiento, id_profesional, fecha, hora, nombre_invitado, apellidos_invitado, correo_invitado, rut_invitado } = req.body;
     let id_usuario = null;
 
     try {
@@ -37,15 +37,23 @@ exports.processNuevaCita = async (req, res) => {
                 
                 
                 const randomPassword = Math.random().toString(36).slice(-8);
-                const result = await userModel.createUser(nombre_invitado, apellidos_invitado, null, correo_invitado, null, null, randomPassword);
+                const result = await userModel.createUser(nombre_invitado, apellidos_invitado, rut_invitado || null, correo_invitado, null, null, randomPassword);
                 id_usuario = result.insertId; 
             }
         }
 
-        
+        // Verificar límite de 14 días
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0);
+        const fechaCita = new Date(fecha);
+        const diffTime = Math.abs(fechaCita - hoy);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > 14) {
+            throw new Error("No puedes agendar con más de 2 semanas de anticipación.");
+        }
+
         await citaModel.createCita(id_usuario, id_profesional, id_procedimiento, fecha, hora);
 
-        
         const profesionales = await citaModel.getProfesionales();
         const procedimientos = await citaModel.getProcedimientos();
         const isLogged = req.session && req.session.userId ? true : false;
@@ -54,6 +62,29 @@ exports.processNuevaCita = async (req, res) => {
 
     } catch (error) {
         console.error("Error al agendar cita:", error);
-        res.status(500).send("Error al procesar la solicitud");
+        
+        const profesionales = await citaModel.getProfesionales();
+        const procedimientos = await citaModel.getProcedimientos();
+        const isLogged = req.session && req.session.userId ? true : false;
+        res.render('citas/nueva', { profesionales, procedimientos, isLogged, error: error.message, success: null });
+    }
+};
+
+exports.getDisponibilidadDiaria = async (req, res) => {
+    const { id_profesional, fecha } = req.body;
+    try {
+        // Horarios fijos de atención (9 cupos)
+        const horariosFijos = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+        
+        // Obtener ocupados
+        const ocupadas = await citaModel.getHorasOcupadas(id_profesional, fecha);
+        
+        // Filtrar disponibles
+        const disponibles = horariosFijos.filter(h => !ocupadas.includes(h));
+        
+        res.json({ success: true, disponibles });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error consultando disponibilidad' });
     }
 };
