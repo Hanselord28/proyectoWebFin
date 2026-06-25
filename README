@@ -1,18 +1,18 @@
-1. INTEGRANTES DEL GRUPO
+# INTEGRANTES DEL GRUPO
 
 Hansel Eduard Tobar López: Desarrollo completo de la app web.
 
-2. DESCRIPCIÓN DEL PROYECTO
+# DESCRIPCIÓN DEL PROYECTO
 
 
-Nombre del negocio: Clínica Dental España.
+##Nombre del negocio: Clínica Dental España.
 
 Área asignada: Salud
 
 
 Problema que resuelve: La aplicación permite publicitar la clínica y automatiza la reserva de citas médicas para pacientes, permitiendo agendar por profesional, procedimiento o especialidad. Además, digitaliza el historial clínico proporcionando paneles de gestión exclusivos para pacientes, profesionales de la salud y administradores.
 
-3. REQUISITOS PREVIOS
+# REQUISITOS PREVIOS
 
 Node.js instalado en el sistema operativo.
 
@@ -20,11 +20,11 @@ XAMPP o servidor MySQL local para alojar la base de datos.
 
 Dependencias clave de Node.js a instalar: express, mysql2, ejs, express-session, bcryptjs, y dotenv.
 
-4. INSTALACIÓN PASO A PASO
+# INSTALACIÓN PASO A PASO
 
 Clonar o descargar el código desde el github del proyecto en tu equipo local.
 
-```
+```bash
 git clone https://github.com/Hanselord28/proyectoWebFin.git
 ```
 
@@ -34,7 +34,7 @@ Abrir tu gestor de base de datos (phpMyAdmin) e importar el script SQL para gene
 
 Abrir la terminal en la carpeta raíz del proyecto y ejecutar el comando 'npm install' para instalar las dependencias necesarias.
 
-```
+```bash
 npm install
 ```
 
@@ -44,12 +44,12 @@ Crear el archivo .env en la raíz del proyecto configurando tus variables de ent
 
 Ejecutar el comando 'node server.js' para iniciar el servidor.
 
-```
+```bash
 node server.js
 ```
 
 
-5. CONFIGURACIÓN DE LA BASE DE DATOS
+# CONFIGURACIÓN DE LA BASE DE DATOS
 
 
 Nombre de la base de datos: 'clinica_espana'
@@ -59,7 +59,7 @@ Credenciales: Los datos de acceso (DB_USER: 'root' y DB_PASSWORD:'') se configur
 
 Archivo SQL: 'clinica_espana', se encuentra en la carpeta raíz del proyecto
 
-6. CREDENCIALES DE PRUEBA
+# CREDENCIALES DE PRUEBA
 
     Administrador: admin@clinicaespana.es / Contraseña: 123456
 
@@ -67,7 +67,7 @@ Archivo SQL: 'clinica_espana', se encuentra en la carpeta raíz del proyecto
 
     Paciente: maguito@explosivo.cl / Contraseña: 123456
 
-7. USO DEL SISTEMA
+# USO DEL SISTEMA
 
 
 Vista pública: Al entrar a la raíz del sitio se visualiza la página principal con información de la clínica y servicios.
@@ -84,7 +84,7 @@ Panel de Profesional: Interfaz donde el médico puede revisar las citas agendada
 
 Panel de Administración: Centro de control que permite realizar operaciones CRUD completas sobre las citas, así como agregar nuevos pacientes y profesionales.
 
-8. ESTRUCTURA DEL PROYECTO
+# ESTRUCTURA DEL PROYECTO
 
 
 config/: Contiene el archivo db.js responsable de establecer la conexión a la base de datos MySQL.
