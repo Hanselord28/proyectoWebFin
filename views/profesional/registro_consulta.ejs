@@ -58,7 +58,7 @@
                                 <label class="form-label text-muted fw-bold">Diagnóstico de la sesión</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">health_and_safety</span></span>
-                                    <textarea class="form-control" name="diagnostico" rows="2" placeholder="Describa el diagnóstico inicial o estado del paciente" required></textarea>
+                                    <textarea class="form-control" name="diagnostico" rows="2" placeholder="Describa el diagnóstico inicial o estado del paciente" maxlength="5000" required></textarea>
                                 </div>
                             </div>
 
@@ -66,7 +66,7 @@
                                 <label class="form-label text-muted fw-bold">Tratamiento o procedimiento realizado</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">healing</span></span>
-                                    <textarea class="form-control" name="tratamiento_realizado" rows="3" placeholder="Detalle los procedimientos aplicados, medicamentos, etc." required></textarea>
+                                    <textarea class="form-control" name="tratamiento_realizado" rows="3" placeholder="Detalle los procedimientos aplicados, medicamentos, etc." maxlength="5000" required></textarea>
                                 </div>
                             </div>
 
@@ -76,7 +76,7 @@
                                     <label class="form-label text-muted fw-bold">Presupuesto del procedimiento ($)</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><span class="material-symbols-outlined fs-5">payments</span></span>
-                                        <input type="number" class="form-control" name="presupuesto" min="0" placeholder="Ej: 50000">
+                                        <input type="number" class="form-control" name="presupuesto" min="0" max="99999999" step="0.01" placeholder="Ej: 50000">
                                     </div>
                                     <div class="form-text text-muted">Puede dejarlo en 0 si no aplica cobro o ya está prepagado.</div>
                                 </div>
@@ -84,7 +84,7 @@
                                     <label class="form-label text-muted fw-bold">Observaciones Adicionales</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><span class="material-symbols-outlined fs-5">comment</span></span>
-                                        <textarea class="form-control" name="observaciones" rows="2" placeholder="Recomendaciones para próxima visita, alergias descubiertas, etc."></textarea>
+                                        <textarea class="form-control" name="observaciones" rows="2" placeholder="Recomendaciones para próxima visita, alergias descubiertas, etc." maxlength="5000"></textarea>
                                     </div>
                                 </div>
                             </div>

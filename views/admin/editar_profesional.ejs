@@ -11,6 +11,12 @@
                 </div>
 
                 <div class="card-body p-4">
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger shadow-sm d-flex align-items-center justify-content-center gap-2" role="alert">
+                            <span class="material-symbols-outlined">error</span> <%= error %>
+                        </div>
+                    <% } %>
+
                     <form action="/admin/profesionales/editar/<%= profesional.id_profesional %>" method="POST">
 
                         <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Datos Clínicos y Personales</h6>
@@ -19,14 +25,14 @@
                                 <label class="form-label text-muted fw-bold">Nombre</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
-                                    <input type="text" class="form-control" name="nombre" value="<%= profesional.nombre %>" required>
+                                    <input type="text" class="form-control" name="nombre" value="<%= profesional.nombre %>" maxlength="100" autocomplete="given-name" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted fw-bold">Apellidos</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
-                                    <input type="text" class="form-control" name="apellidos" value="<%= profesional.apellidos %>" required>
+                                    <input type="text" class="form-control" name="apellidos" value="<%= profesional.apellidos %>" maxlength="100" autocomplete="family-name" required>
                                 </div>
                             </div>
                         </div>
@@ -36,14 +42,15 @@
                                 <label class="form-label text-muted fw-bold">RUT Personal (DNI/NIE)</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">badge</span></span>
-                                    <input type="text" class="form-control" name="rut_personal" value="<%= profesional.rut_personal %>" required>
+                                    <input type="text" class="form-control" name="rut_personal" value="<%= profesional.rut_personal %>" maxlength="20" autocomplete="off" required>
+                                    <div class="invalid-feedback">Por favor, ingrese un RUT válido (ej: 12.345.678-9).</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted fw-bold">Nº de Colegiado</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">assignment_ind</span></span>
-                                    <input type="text" class="form-control" name="rut_profesional" value="<%= profesional.rut_profesional %>" required>
+                                    <input type="text" class="form-control" name="rut_profesional" value="<%= profesional.rut_profesional %>" maxlength="50" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
@@ -70,14 +77,14 @@
                                 <label class="form-label text-muted fw-bold">Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">mail</span></span>
-                                    <input type="email" class="form-control" name="correo" value="<%= profesional.correo %>" required>
+                                    <input type="email" class="form-control" name="correo" value="<%= profesional.correo %>" maxlength="100" autocomplete="email" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted fw-bold">Nueva Contraseña (Opcional)</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">lock</span></span>
-                                    <input type="password" class="form-control" name="password" placeholder="Dejar en blanco para mantener actual">
+                                    <input type="password" class="form-control" name="password" placeholder="Dejar en blanco para mantener actual" maxlength="100" autocomplete="new-password">
                                 </div>
                                 <div class="form-text text-muted">Sólo rellene este campo si desea cambiar la contraseña del profesional.</div>
                             </div>

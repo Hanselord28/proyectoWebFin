@@ -11,6 +11,12 @@
                 </div>
 
                 <div class="card-body p-4">
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger shadow-sm d-flex align-items-center justify-content-center gap-2" role="alert">
+                            <span class="material-symbols-outlined">error</span> <%= error %>
+                        </div>
+                    <% } %>
+
                     <form action="/admin/pacientes/nuevo" method="POST">
 
                         <h6 class="text-muted fw-bold mb-3 border-bottom pb-2">Datos Personales</h6>
@@ -19,14 +25,14 @@
                                 <label class="form-label text-muted fw-bold">Nombre</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
-                                    <input type="text" class="form-control" name="nombre" placeholder="Ej: Juan" required>
+                                    <input type="text" class="form-control" name="nombre" placeholder="Ej: Juan" maxlength="100" autocomplete="given-name" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted fw-bold">Apellidos</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">person</span></span>
-                                    <input type="text" class="form-control" name="apellidos" placeholder="Ej: Pérez" required>
+                                    <input type="text" class="form-control" name="apellidos" placeholder="Ej: Pérez" maxlength="100" autocomplete="family-name" required>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +42,8 @@
                                 <label class="form-label text-muted fw-bold">RUT</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">badge</span></span>
-                                    <input type="text" class="form-control" name="rut" placeholder="12345678-9" required>
+                                    <input type="text" class="form-control" name="rut" placeholder="12345678-9" maxlength="20" autocomplete="off" required>
+                                    <div class="invalid-feedback">Por favor, ingrese un RUT válido (ej: 12.345.678-9).</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -59,14 +66,14 @@
                                 <label class="form-label text-muted fw-bold">Teléfono</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">call</span></span>
-                                    <input type="tel" class="form-control" name="telefono" placeholder="+56 9 1234 5678" required>
+                                    <input type="tel" class="form-control" name="telefono" placeholder="+56 9 1234 5678" maxlength="20" autocomplete="tel" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label text-muted fw-bold">Correo Electrónico</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><span class="material-symbols-outlined fs-5">mail</span></span>
-                                    <input type="email" class="form-control" name="correo" placeholder="correo@ejemplo.com" required>
+                                    <input type="email" class="form-control" name="correo" placeholder="correo@ejemplo.com" maxlength="100" autocomplete="email" required>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +82,7 @@
                             <label class="form-label text-muted fw-bold">Contraseña Temporal</label>
                             <div class="input-group">
                                 <span class="input-group-text"><span class="material-symbols-outlined fs-5">lock</span></span>
-                                <input type="password" class="form-control" name="password" placeholder="Asigne una contraseña inicial" required>
+                                <input type="password" class="form-control" name="password" placeholder="Asigne una contraseña inicial" maxlength="100" autocomplete="new-password" required>
                             </div>
                             <div class="form-text">El paciente utilizará esta contraseña y su correo para iniciar sesión.</div>
                         </div>

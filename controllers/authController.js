@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const userModel = require('../models/userModel');
 const profesionalModel = require('../models/profesionalModel');
+const { validateRut, cleanRut, formatRut } = require('../utils/h-rut');
 
 exports.showLogin = (req, res) => {
     res.render('auth/login', { error: null });
@@ -61,6 +62,12 @@ exports.processRegistro = async (req, res) => {
 
     const { nombre, apellidos, rut, correo, telefono, prevision, password } = req.body;
 
+    if (!validateRut(rut)) {
+        return res.render('auth/registro', { error: 'El RUT ingresado no es válido.' });
+    }
+
+    const formattedRut = formatRut(cleanRut(rut));
+
     try {
         const existingUser = await userModel.getUserByEmail(correo);
 
@@ -68,7 +75,7 @@ exports.processRegistro = async (req, res) => {
             return res.render('auth/registro', { error: 'Este correo electrónico ya está registrado. Intenta iniciar sesión.' });
         }
 
-        await userModel.createUser(nombre, apellidos, rut, correo, telefono, prevision, password);
+        await userModel.createUser(nombre, apellidos, formattedRut, correo, telefono, prevision, password);
 
         res.redirect('/auth/login');
 

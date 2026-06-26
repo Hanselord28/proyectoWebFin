@@ -1,4 +1,5 @@
 const profesionalModel = require('../models/profesionalModel');
+const { validateRut, cleanRut, formatRut } = require('../utils/h-rut');
 
 exports.showDashboard = async (req, res) => {
 
@@ -16,7 +17,8 @@ exports.showDashboard = async (req, res) => {
         let historialPaciente = [];
 
         if (rutBusqueda) {
-            pacienteEncontrado = await profesionalModel.getPacienteByRut(rutBusqueda);
+            const formattedRut = formatRut(cleanRut(rutBusqueda));
+            pacienteEncontrado = await profesionalModel.getPacienteByRut(formattedRut);
             if (pacienteEncontrado) {
                 historialPaciente = await profesionalModel.getHistorialPaciente(pacienteEncontrado.id_usuario);
             }

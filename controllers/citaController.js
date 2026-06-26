@@ -1,5 +1,6 @@
 const citaModel = require('../models/citaModel');
 const userModel = require('../models/userModel'); 
+const { validateRut, cleanRut, formatRut } = require('../utils/h-rut');
 
 exports.showNuevaCita = async (req, res) => {
     try {
@@ -31,9 +32,15 @@ exports.processNuevaCita = async (req, res) => {
 
                 id_usuario = existingUser.id_usuario;
             } else {
+                if (rut_invitado) {
+                    if (!validateRut(rut_invitado)) {
+                        throw new Error("El RUT ingresado no es válido.");
+                    }
+                }
+                const formattedRut = rut_invitado ? formatRut(cleanRut(rut_invitado)) : null;
 
                 const randomPassword = Math.random().toString(36).slice(-8);
-                const result = await userModel.createUser(nombre_invitado, apellidos_invitado, rut_invitado || null, correo_invitado, null, null, randomPassword);
+                const result = await userModel.createUser(nombre_invitado, apellidos_invitado, formattedRut, correo_invitado, null, null, randomPassword);
                 id_usuario = result.insertId; 
             }
         }

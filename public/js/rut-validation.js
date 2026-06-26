@@ -1,8 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const rutInputs = document.querySelectorAll('input[name*="rut" i], input[id*="rut" i]');
+    const rutInputs = Array.from(document.querySelectorAll('input[name*="rut" i], input[id*="rut" i]'))
+        .filter(input => {
+            const name = (input.getAttribute('name') || '').toLowerCase();
+            const id = (input.getAttribute('id') || '').toLowerCase();
+            return !name.includes('profesional') && !id.includes('profesional');
+        });
 
     rutInputs.forEach(input => {
+        // Formatear y validar en carga si ya tiene valor
+        if (input.value !== '' && window.hRut) {
+            const cleaned = window.hRut.cleanRut(input.value);
+            const formatted = window.hRut.formatRut(cleaned);
+            input.value = formatted;
+            if (window.hRut.validateRut(formatted)) {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else {
+                input.classList.remove('is-valid');
+                input.classList.add('is-invalid');
+            }
+        }
 
         input.addEventListener('input', (e) => {
             if (e.target.value === '') {

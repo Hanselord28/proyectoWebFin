@@ -71,7 +71,7 @@
                             <span class="material-symbols-outlined">search</span> Buscar Historial de Paciente
                         </h5>
                         <form action="/profesional/dashboard" method="GET" class="d-flex">
-                            <input type="text" class="form-control me-2" name="rut" placeholder="Ingrese el RUT (Ej: 12.345.678-9)" value="<%= rutBuscado || '' %>" required>
+                            <input type="text" class="form-control me-2" name="rut" placeholder="Ingrese el RUT (Ej: 12.345.678-9)" value="<%= rutBuscado || '' %>" maxlength="20" autocomplete="off" required>
                             <button type="submit" class="btn btn-info text-white fw-bold d-flex align-items-center justify-content-center gap-1">
                                 <span class="material-symbols-outlined fs-6">search</span> Buscar
                             </button>

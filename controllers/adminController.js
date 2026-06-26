@@ -1,5 +1,6 @@
 const adminModel = require('../models/adminModel');
 const userModel = require('../models/userModel');
+const { validateRut, cleanRut, formatRut } = require('../utils/h-rut');
 
 exports.showDashboard = async (req, res) => {
 
@@ -107,7 +108,8 @@ exports.buscarPacientePorRut = async (req, res) => {
 
     try {
         const { rut } = req.body;
-        const paciente = await adminModel.getPacienteByRut(rut);
+        const formattedRut = formatRut(cleanRut(rut));
+        const paciente = await adminModel.getPacienteByRut(formattedRut);
 
         if (paciente) {
             res.json({ success: true, paciente });
@@ -138,41 +140,61 @@ exports.processAddCita = async (req, res) => {
 
 exports.showAddPaciente = (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
-    res.render('admin/nuevo_paciente', { nombreAdmin: req.session.nombre });
+    res.render('admin/nuevo_paciente', { nombreAdmin: req.session.nombre, error: null });
 };
 
 exports.processAddPaciente = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
+    const { nombre, apellidos, correo, password, rut, telefono, prevision } = req.body;
+
+    if (!validateRut(rut)) {
+        return res.render('admin/nuevo_paciente', {
+            nombreAdmin: req.session.nombre,
+            error: 'El RUT ingresado no es válido.'
+        });
+    }
+    const formattedRut = formatRut(cleanRut(rut));
+
     try {
-        const { nombre, apellidos, correo, password, rut, telefono, prevision } = req.body;
-
-        await userModel.createUser(nombre, apellidos, rut, correo, telefono, prevision, password, 'paciente');
-
+        await userModel.createUser(nombre, apellidos, formattedRut, correo, telefono, prevision, password, 'paciente');
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error("Error al registrar paciente desde admin:", error);
-        res.status(500).send("Hubo un error al registrar el paciente. Verifique que el correo o RUT no existan ya.");
+        res.render('admin/nuevo_paciente', {
+            nombreAdmin: req.session.nombre,
+            error: 'Hubo un error al registrar el paciente. Verifique que el correo o RUT no existan ya.'
+        });
     }
 };
 
 exports.showAddProfesional = (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
-    res.render('admin/nuevo_profesional', { nombreAdmin: req.session.nombre });
+    res.render('admin/nuevo_profesional', { nombreAdmin: req.session.nombre, error: null });
 };
 
 exports.processAddProfesional = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
+    const { nombre, apellidos, rut_personal, rut_profesional, especialidad, correo, password } = req.body;
+
+    if (!validateRut(rut_personal)) {
+        return res.render('admin/nuevo_profesional', {
+            nombreAdmin: req.session.nombre,
+            error: 'El RUT personal ingresado no es válido.'
+        });
+    }
+    const formattedRut = formatRut(cleanRut(rut_personal));
+
     try {
-        const { nombre, apellidos, rut_personal, rut_profesional, especialidad, correo, password } = req.body;
-
-        await adminModel.addProfesional(nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional);
-
+        await adminModel.addProfesional(nombre, apellidos, especialidad, correo, password, formattedRut, rut_profesional);
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error("Error al registrar profesional:", error);
-        res.status(500).send("Hubo un error al registrar. Verifique que el correo o RUT no existan ya.");
+        res.render('admin/nuevo_profesional', {
+            nombreAdmin: req.session.nombre,
+            error: 'Hubo un error al registrar. Verifique que el correo o RUT no existan ya.'
+        });
     }
 };
 
@@ -202,7 +224,8 @@ exports.showEditProfesional = async (req, res) => {
 
         res.render('admin/editar_profesional', {
             profesional,
-            nombreAdmin: req.session.nombre
+            nombreAdmin: req.session.nombre,
+            error: null
         });
     } catch (error) {
         console.error("Error al cargar vista de edición de profesional:", error);
@@ -213,16 +236,28 @@ exports.showEditProfesional = async (req, res) => {
 exports.processEditProfesional = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
+    const idProfesional = req.params.id;
+    const { nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional } = req.body;
+
+    if (!validateRut(rut_personal)) {
+        return res.render('admin/editar_profesional', {
+            profesional: { id_profesional: idProfesional, nombre, apellidos, especialidad, correo, rut_personal, rut_profesional },
+            nombreAdmin: req.session.nombre,
+            error: 'El RUT personal ingresado no es válido.'
+        });
+    }
+    const formattedRut = formatRut(cleanRut(rut_personal));
+
     try {
-        const idProfesional = req.params.id;
-        const { nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional } = req.body;
-
-        await adminModel.updateProfesional(idProfesional, nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional);
-
+        await adminModel.updateProfesional(idProfesional, nombre, apellidos, especialidad, correo, password, formattedRut, rut_profesional);
         res.redirect('/admin/profesionales');
     } catch (error) {
         console.error("Error al actualizar profesional:", error);
-        res.status(500).send("Error interno del servidor al actualizar profesional");
+        res.render('admin/editar_profesional', {
+            profesional: { id_profesional: idProfesional, nombre, apellidos, especialidad, correo, rut_personal, rut_profesional },
+            nombreAdmin: req.session.nombre,
+            error: 'Error al actualizar profesional. Verifique que el correo o RUT no existan ya.'
+        });
     }
 };
 
