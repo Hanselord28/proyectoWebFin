@@ -1,7 +1,7 @@
 const profesionalModel = require('../models/profesionalModel');
 
 exports.showDashboard = async (req, res) => {
-    
+
     if (!req.session || req.session.rol !== 'profesional') {
         return res.redirect('/');
     }
@@ -11,11 +11,10 @@ exports.showDashboard = async (req, res) => {
 
     try {
         const citas = await profesionalModel.getCitasByProfesional(id_profesional);
-        
+
         let pacienteEncontrado = null;
         let historialPaciente = [];
 
-        
         if (rutBusqueda) {
             pacienteEncontrado = await profesionalModel.getPacienteByRut(rutBusqueda);
             if (pacienteEncontrado) {
@@ -37,7 +36,6 @@ exports.showDashboard = async (req, res) => {
     }
 };
 
-// Mostrar formulario para registrar la consulta
 exports.showRegistroConsulta = async (req, res) => {
     if (!req.session || req.session.rol !== 'profesional') {
         return res.redirect('/');
@@ -47,7 +45,6 @@ exports.showRegistroConsulta = async (req, res) => {
         const id_cita = req.params.id_cita;
         const id_profesional = req.session.userId;
 
-        // Validar que la cita exista y pertenezca al profesional
         const cita = await profesionalModel.getCitaByIdForProfesional(id_cita, id_profesional);
         if (!cita) {
             return res.redirect('/profesional/dashboard');
@@ -64,7 +61,6 @@ exports.showRegistroConsulta = async (req, res) => {
     }
 };
 
-// Procesar el registro de la consulta
 exports.processRegistroConsulta = async (req, res) => {
     if (!req.session || req.session.rol !== 'profesional') {
         return res.redirect('/');
@@ -75,13 +71,11 @@ exports.processRegistroConsulta = async (req, res) => {
         const id_profesional = req.session.userId;
         const { diagnostico, tratamiento_realizado, presupuesto, observaciones } = req.body;
 
-        // Validar la cita
         const cita = await profesionalModel.getCitaByIdForProfesional(id_cita, id_profesional);
         if (!cita) {
             return res.redirect('/profesional/dashboard');
         }
 
-        // Guardar el historial clínico
         await profesionalModel.addHistorialClinico(
             cita.id_usuario, 
             id_cita, 
@@ -95,7 +89,6 @@ exports.processRegistroConsulta = async (req, res) => {
         // Actualizar el estado de la cita a completada
         await profesionalModel.updateEstadoCita(id_cita, 'completada');
 
-        // Redirigir al dashboard
         res.redirect('/profesional/dashboard');
 
     } catch (error) {

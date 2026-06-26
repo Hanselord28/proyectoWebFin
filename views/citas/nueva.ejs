@@ -17,9 +17,9 @@
                         </h3>
                     </div>
                     <div class="card-body p-4 p-md-5 pt-3">
-                        
+
                         <form action="/citas/nueva" method="POST">
-                            
+
                             <% if (typeof isLogged === 'undefined' || !isLogged) { %>
                                 <div class="alert alert-info small mb-4 d-flex align-items-center gap-2">
                                     <span class="material-symbols-outlined fs-5">info</span>
@@ -113,7 +113,7 @@
             const maxDateObj = new Date(today);
             maxDateObj.setDate(maxDateObj.getDate() + 14);
             const maxDate = maxDateObj.toISOString().split('T')[0];
-            
+
             fechaInput.min = minDate;
             fechaInput.max = maxDate;
 

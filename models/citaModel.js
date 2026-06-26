@@ -1,28 +1,24 @@
 const pool = require('../config/db');
 
-
-
 const getProfesionales = async () => {
     const query = `SELECT * FROM profesionales`;
     const [rows] = await pool.query(query);
     return rows;
 };
 
-
 const getProcedimientos = async () => {
     const [rows] = await pool.query("SELECT * FROM procedimientos");
     return rows;
 };
 
-
 const getHorasOcupadas = async (id_profesional, fecha) => {
     const query = `SELECT hora FROM citas WHERE id_profesional = ? AND fecha = ? AND estado != 'cancelada'`;
     const [rows] = await pool.query(query, [id_profesional, fecha]);
-    return rows.map(r => r.hora.substring(0, 5)); // Devolver 'HH:MM'
+    return rows.map(r => r.hora.substring(0, 5)); 
 };
 
 const createCita = async (id_usuario, id_profesional, id_procedimiento, fecha, hora) => {
-    // 1. Verificar disponibilidad en la tabla de citas para la fecha
+
     const [dispRows] = await pool.query(
         'SELECT citas_ocupadas FROM disponibilidad_diaria WHERE id_profesional = ? AND fecha = ?', 
         [id_profesional, fecha]
@@ -32,7 +28,6 @@ const createCita = async (id_usuario, id_profesional, id_procedimiento, fecha, h
         throw new Error('El profesional ha alcanzado el máximo de citas (9) para este día.');
     }
 
-    // 2. Verificar que la hora específica no esté ocupada
     const horasOcupadas = await getHorasOcupadas(id_profesional, fecha);
     if (horasOcupadas.includes(hora.substring(0, 5))) {
         throw new Error('La hora seleccionada ya no está disponible.');

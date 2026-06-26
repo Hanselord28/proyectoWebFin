@@ -53,29 +53,23 @@ exports.processLogin = async (req, res) => {
     }
 };
 
-
-
-
 exports.showRegistro = (req, res) => {
     res.render('auth/registro', { error: null });
 };
 
-
 exports.processRegistro = async (req, res) => {
-    
+
     const { nombre, apellidos, rut, correo, telefono, prevision, password } = req.body;
 
     try {
         const existingUser = await userModel.getUserByEmail(correo);
-        
+
         if (existingUser) {
             return res.render('auth/registro', { error: 'Este correo electrónico ya está registrado. Intenta iniciar sesión.' });
         }
 
-        
         await userModel.createUser(nombre, apellidos, rut, correo, telefono, prevision, password);
 
-        
         res.redirect('/auth/login');
 
     } catch (error) {
@@ -87,16 +81,14 @@ exports.processRegistro = async (req, res) => {
     }
 };
 
-
 exports.logout = (req, res) => {
-    
+
     req.session.destroy((err) => {
         if (err) {
             console.error("Error al cerrar sesión:", err);
             return res.status(500).send("No se pudo cerrar la sesión.");
         }
-        
-        
+
         res.redirect('/');
     });
 };

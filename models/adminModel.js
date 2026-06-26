@@ -2,7 +2,6 @@ const pool = require('../config/db');
 
 const bcrypt = require('bcryptjs');
 
-
 const getAllCitas = async () => {
     const query = `
         SELECT c.*, 
@@ -19,9 +18,8 @@ const getAllCitas = async () => {
     return rows;
 };
 
-
 const getStats = async () => {
-    
+
     const [citasPendientes] = await pool.query('SELECT COUNT(*) as total FROM citas WHERE estado = "pendiente"');
     const [pacientes] = await pool.query('SELECT COUNT(*) as total FROM usuarios WHERE rol = "paciente"');
     const [profesionales] = await pool.query('SELECT COUNT(*) as total FROM profesionales');
@@ -38,7 +36,6 @@ const getCitaById = async (id) => {
     return rows[0];
 };
 
-
 const updateCita = async (id, fecha, hora, id_profesional, id_procedimiento, estado) => {
     await pool.query(
         'UPDATE citas SET fecha = ?, hora = ?, id_profesional = ?, id_procedimiento = ?, estado = ? WHERE id_cita = ?',
@@ -46,23 +43,19 @@ const updateCita = async (id, fecha, hora, id_profesional, id_procedimiento, est
     );
 };
 
-
 const deleteCita = async (id) => {
     await pool.query('DELETE FROM citas WHERE id_cita = ?', [id]);
 };
-
 
 const getProfesionales = async () => {
     const [rows] = await pool.query('SELECT id_profesional, nombre, apellidos FROM profesionales');
     return rows;
 };
 
-
 const getProcedimientos = async () => {
     const [rows] = await pool.query('SELECT * FROM procedimientos');
     return rows;
 };
-
 
 const getPacienteByRut = async (rut) => {
     const [rows] = await pool.query(
@@ -71,7 +64,6 @@ const getPacienteByRut = async (rut) => {
     );
     return rows[0]; 
 };
-
 
 const addCitaAdmin = async (id_usuario, id_profesional, id_procedimiento, fecha, hora, estado) => {
     await pool.query(
@@ -90,19 +82,16 @@ const addProfesional = async (nombre, apellidos, especialidad, correo, password,
     );
 };
 
-// Obtener todos los profesionales (listado completo)
 const getAllProfesionalesFull = async () => {
     const [rows] = await pool.query('SELECT * FROM profesionales ORDER BY nombre ASC');
     return rows;
 };
 
-// Obtener un profesional por ID
 const getProfesionalById = async (id) => {
     const [rows] = await pool.query('SELECT * FROM profesionales WHERE id_profesional = ?', [id]);
     return rows[0];
 };
 
-// Actualizar un profesional
 const updateProfesional = async (id, nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional) => {
     if (password && password.trim() !== '') {
         const salt = await bcrypt.genSalt(10);

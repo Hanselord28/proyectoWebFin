@@ -1,20 +1,18 @@
 const adminModel = require('../models/adminModel');
 const userModel = require('../models/userModel');
 
-
 exports.showDashboard = async (req, res) => {
-    
+
     if (!req.session || req.session.rol !== 'admin') {
-        
+
         return res.redirect('/');
     }
 
     try {
-        
+
         const citas = await adminModel.getAllCitas();
         const stats = await adminModel.getStats();
 
-        
         res.render('admin/dashboard', {
             nombreAdmin: req.session.nombre,
             citas: citas,
@@ -27,23 +25,19 @@ exports.showDashboard = async (req, res) => {
     }
 };
 
-
 exports.showEditCita = async (req, res) => {
-    
+
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
     try {
         const idCita = req.params.id;
 
-        
         const cita = await adminModel.getCitaById(idCita);
         const profesionales = await adminModel.getProfesionales();
         const procedimientos = await adminModel.getProcedimientos();
 
-        
         if (!cita) return res.redirect('/admin/dashboard');
 
-        
         res.render('admin/editar_cita', {
             cita,
             profesionales,
@@ -56,7 +50,6 @@ exports.showEditCita = async (req, res) => {
     }
 };
 
-
 exports.processEditCita = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
@@ -64,10 +57,8 @@ exports.processEditCita = async (req, res) => {
         const idCita = req.params.id;
         const { fecha, hora, id_profesional, id_procedimiento, estado } = req.body;
 
-        
         await adminModel.updateCita(idCita, fecha, hora, id_profesional, id_procedimiento, estado);
 
-        
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error("Error al actualizar la cita:", error);
@@ -75,17 +66,14 @@ exports.processEditCita = async (req, res) => {
     }
 };
 
-
 exports.deleteCita = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
     try {
         const idCita = req.params.id;
 
-        
         await adminModel.deleteCita(idCita);
 
-        
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error("Error al eliminar la cita:", error);
@@ -93,12 +81,11 @@ exports.deleteCita = async (req, res) => {
     }
 };
 
-
 exports.showAddCita = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
     try {
-        
+
         const profesionales = await adminModel.getProfesionales();
         const procedimientos = await adminModel.getProcedimientos();
 
@@ -112,7 +99,6 @@ exports.showAddCita = async (req, res) => {
         res.status(500).send("Error interno del servidor");
     }
 };
-
 
 exports.buscarPacientePorRut = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') {
@@ -134,12 +120,11 @@ exports.buscarPacientePorRut = async (req, res) => {
     }
 };
 
-
 exports.processAddCita = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
     try {
-        
+
         const { id_usuario, fecha, hora, id_profesional, id_procedimiento } = req.body;
 
         await adminModel.addCitaAdmin(id_usuario, id_profesional, id_procedimiento, fecha, hora, 'pendiente');
@@ -151,12 +136,10 @@ exports.processAddCita = async (req, res) => {
     }
 };
 
-
 exports.showAddPaciente = (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
     res.render('admin/nuevo_paciente', { nombreAdmin: req.session.nombre });
 };
-
 
 exports.processAddPaciente = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
@@ -164,11 +147,8 @@ exports.processAddPaciente = async (req, res) => {
     try {
         const { nombre, apellidos, correo, password, rut, telefono, prevision } = req.body;
 
-        
-        
         await userModel.createUser(nombre, apellidos, rut, correo, telefono, prevision, password, 'paciente');
 
-        
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error("Error al registrar paciente desde admin:", error);
@@ -176,12 +156,10 @@ exports.processAddPaciente = async (req, res) => {
     }
 };
 
-
 exports.showAddProfesional = (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
     res.render('admin/nuevo_profesional', { nombreAdmin: req.session.nombre });
 };
-
 
 exports.processAddProfesional = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
@@ -191,7 +169,6 @@ exports.processAddProfesional = async (req, res) => {
 
         await adminModel.addProfesional(nombre, apellidos, especialidad, correo, password, rut_personal, rut_profesional);
 
-        
         res.redirect('/admin/dashboard');
     } catch (error) {
         console.error("Error al registrar profesional:", error);
@@ -199,7 +176,6 @@ exports.processAddProfesional = async (req, res) => {
     }
 };
 
-// Listar todos los profesionales
 exports.showProfesionales = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
@@ -215,7 +191,6 @@ exports.showProfesionales = async (req, res) => {
     }
 };
 
-// Mostrar el formulario de edición de profesional
 exports.showEditProfesional = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
@@ -235,7 +210,6 @@ exports.showEditProfesional = async (req, res) => {
     }
 };
 
-// Procesar edición de profesional
 exports.processEditProfesional = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 
@@ -252,7 +226,6 @@ exports.processEditProfesional = async (req, res) => {
     }
 };
 
-// Eliminar un profesional
 exports.deleteProfesional = async (req, res) => {
     if (!req.session || req.session.rol !== 'admin') return res.redirect('/');
 

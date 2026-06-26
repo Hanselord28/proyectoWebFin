@@ -1,6 +1,5 @@
 const pool = require('../config/db');
 
-
 const getCitasPendientes = async (id_usuario) => {
     const query = `
         SELECT c.id_cita, c.fecha, c.hora, c.estado, 
@@ -19,8 +18,6 @@ const getCitasPendientes = async (id_usuario) => {
         throw new Error(`Error obteniendo citas pendientes: ${error.message}`);
     }
 };
-
-
 
 const getHistorialClinico = async (id_usuario) => {
     const query = `
@@ -45,19 +42,16 @@ const cancelCita = async (id_cita, id_usuario) => {
     try {
         await connection.beginTransaction();
 
-        // Obtener la cita antes de cancelarla
         const [citaRows] = await connection.query('SELECT id_profesional, fecha, estado FROM citas WHERE id_cita = ? AND id_usuario = ?', [id_cita, id_usuario]);
-        
+
         if (citaRows.length === 0 || citaRows[0].estado === 'cancelada') {
             throw new Error("Cita no encontrada o ya cancelada");
         }
 
         const { id_profesional, fecha } = citaRows[0];
 
-        // Cancelar la cita
         await connection.query('UPDATE citas SET estado = "cancelada" WHERE id_cita = ?', [id_cita]);
 
-        // Restar disponibilidad
         await connection.query(
             'UPDATE disponibilidad_diaria SET citas_ocupadas = GREATEST(0, citas_ocupadas - 1) WHERE id_profesional = ? AND fecha = ?', 
             [id_profesional, fecha]

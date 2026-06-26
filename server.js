@@ -5,16 +5,13 @@ const path = require('path');
 
 const app = express();
 
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
 
 app.use(express.static(path.join(__dirname, 'public'))); 
 app.use('/js/hrut', express.static(path.join(__dirname, 'node_modules', 'hrut', 'src')));
 app.use(express.urlencoded({ extended: false })); 
 app.use(express.json());
-
 
 app.use(session({
     secret: process.env.SESSION_SECRET || 'clave_super_mega_hiper_secreta_para_sesiones',
@@ -23,7 +20,6 @@ app.use(session({
     cookie: { secure: false } 
 }));
 
-
 app.use((req, res, next) => {
     res.locals.isLogged = req.session && req.session.userId ? true : false;
     res.locals.userRol = req.session ? req.session.rol : null;
@@ -31,54 +27,24 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const pacienteRoutes = require('./routes/paciente');
 app.use('/paciente', pacienteRoutes);
-
 
 app.get('/', (req, res) => {
     res.render('index', { titulo: 'Clínica Dental España' }); 
 });
 
-
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
-
-
 
 const citasRoutes = require('./routes/cita'); 
 app.use('/citas', citasRoutes);
 
-
 const adminRoutes = require('./routes/admin');
 app.use('/admin', adminRoutes);
 
-
 const profesionalRoutes = require('./routes/profesional');
 app.use('/profesional', profesionalRoutes);
-
-
-
-
-
-
-
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -9,9 +9,9 @@
                     <span class="material-symbols-outlined">person_add</span>
                     <h4 class="mb-0">Agendar Cita Manual</h4>
                 </div>
-                
+
                 <div class="card-body p-4">
-                    
+
                     <div class="mb-4 pb-4 border-bottom">
                         <label class="form-label text-muted fw-bold">Buscar Paciente por RUT</label>
                         <div class="input-group mb-2">
@@ -25,7 +25,7 @@
                     </div>
 
                     <form action="/admin/citas/nueva" method="POST" id="formCita" class="d-none">
-                        
+
                         <input type="hidden" name="id_usuario" id="id_usuario_oculto" required>
 
                         <div class="alert alert-info mb-4 d-flex align-items-center gap-3">
@@ -119,30 +119,27 @@ document.getElementById('btnBuscar').addEventListener('click', async () => {
     }
 
     try {
-        
+
         const response = await fetch('/admin/citas/buscar-paciente', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ rut })
         });
-        
+
         const data = await response.json();
 
         if(data.success) {
-            
+
             alerta.classList.add('d-none');
-            
-            
+
             document.getElementById('nombrePacienteEncontrado').innerText = `${data.paciente.nombre} ${data.paciente.apellidos}`;
             document.getElementById('contactoPacienteEncontrado').innerText = `Correo: ${data.paciente.correo} | Tel: ${data.paciente.telefono || 'N/A'}`;
-            
-            
+
             document.getElementById('id_usuario_oculto').value = data.paciente.id_usuario;
 
-            
             formulario.classList.remove('d-none');
         } else {
-            
+
             formulario.classList.add('d-none');
             alerta.className = 'alert alert-danger mt-2';
             alerta.innerHTML = `<span class="material-symbols-outlined align-middle">error</span> ${data.message}`;

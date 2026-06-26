@@ -1,11 +1,9 @@
 const pool = require('../config/db');
 
-
 const getProfesionalByEmail = async (correo) => {
     const [rows] = await pool.query('SELECT * FROM profesionales WHERE correo = ?', [correo]);
     return rows[0];
 };
-
 
 const getCitasByProfesional = async (id_profesional) => {
     const query = `
@@ -22,12 +20,10 @@ const getCitasByProfesional = async (id_profesional) => {
     return rows;
 };
 
-
 const getPacienteByRut = async (rut) => {
     const [rows] = await pool.query("SELECT id_usuario, nombre, apellidos, rut, correo, telefono, prevision FROM usuarios WHERE rut = ? AND rol = 'paciente'", [rut]);
     return rows[0];
 };
-
 
 const getHistorialPaciente = async (id_paciente) => {
     const query = `
@@ -46,7 +42,6 @@ const getHistorialPaciente = async (id_paciente) => {
     return rows;
 };
 
-// Obtener detalles de una cita específica para un profesional
 const getCitaByIdForProfesional = async (id_cita, id_profesional) => {
     const query = `
         SELECT c.*, 
@@ -61,7 +56,6 @@ const getCitaByIdForProfesional = async (id_cita, id_profesional) => {
     return rows[0];
 };
 
-// Registrar en el historial clínico
 const addHistorialClinico = async (id_paciente, id_cita, diagnostico, tratamiento_realizado, presupuesto, id_profesional, observaciones) => {
     await pool.query(
         'INSERT INTO historial_clinico (id_paciente, id_cita, diagnostico, tratamiento_realizado, presupuesto, id_profesional, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -69,7 +63,6 @@ const addHistorialClinico = async (id_paciente, id_cita, diagnostico, tratamient
     );
 };
 
-// Actualizar el estado de la cita
 const updateEstadoCita = async (id_cita, estado) => {
     await pool.query('UPDATE citas SET estado = ? WHERE id_cita = ?', [estado, id_cita]);
 };
